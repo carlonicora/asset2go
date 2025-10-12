@@ -1,3 +1,9 @@
+## [1.7.2](https://github.com/carlonicora/asset2go/compare/v1.7.1...v1.7.2) (2025-10-12)
+
+### 🐛 Bug Fixes
+
+* correct docker production build for coolify ([5c1e7de](https://github.com/carlonicora/asset2go/commit/5c1e7deb911e199e8c43e63405f17106b51686e1))
+
 ## [1.7.1](https://github.com/carlonicora/asset2go/compare/v1.7.0...v1.7.1) (2025-10-12)
 
 ### 🐛 Bug Fixes
