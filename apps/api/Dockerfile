@@ -15,8 +15,8 @@ FROM node:22-alpine AS base
 # Install pnpm
 RUN corepack enable && corepack prepare pnpm@10.18.2 --activate
 
-# Install build dependencies for native modules (required for sharp)
-RUN apk add --no-cache python3 py3-pip make g++ cairo-dev jpeg-dev pango-dev giflib-dev
+# Install build dependencies for native modules (required for sharp + webp)
+RUN apk add --no-cache python3 py3-pip make g++ cairo-dev jpeg-dev pango-dev giflib-dev libwebp-dev
 
 WORKDIR /app
 
@@ -79,7 +79,7 @@ RUN pnpm build
 FROM node:22-alpine AS production
 
 # Install runtime dependencies only (no build tools)
-RUN apk add --no-cache cairo jpeg pango giflib
+RUN apk add --no-cache cairo jpeg pango giflib libwebp
 
 # Install pnpm
 RUN corepack enable && corepack prepare pnpm@10.18.2 --activate
