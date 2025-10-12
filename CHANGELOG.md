@@ -1,3 +1,9 @@
+## [1.7.4](https://github.com/carlonicora/asset2go/compare/v1.7.3...v1.7.4) (2025-10-12)
+
+### 🐛 Bug Fixes
+
+* correct port mapping for coolify ([727bb6f](https://github.com/carlonicora/asset2go/commit/727bb6fbc7b2c366dccc79627155c132206c23d9))
+
 ## [1.7.3](https://github.com/carlonicora/asset2go/compare/v1.7.2...v1.7.3) (2025-10-12)
 
 ### 🐛 Bug Fixes
