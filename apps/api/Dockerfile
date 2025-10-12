@@ -40,8 +40,9 @@ RUN pnpm install --frozen-lockfile
 COPY apps/api ./apps/api/
 COPY packages/shared ./packages/shared/
 
-# Expose port (configurable via docker-compose)
-EXPOSE 3000
+# Expose port (set via build arg; defaults to 3400 for local compose)
+ARG API_PORT=3400
+EXPOSE ${API_PORT}
 
 # Development command (hot reload) - stay in /app to access tsconfig.json
 CMD ["pnpm", "--filter", "asset2go-api", "run", "dev"]
@@ -98,8 +99,9 @@ RUN pnpm install --frozen-lockfile --prod --ignore-scripts
 
 WORKDIR /app/apps/api
 
-# Expose port
-EXPOSE 3000
+# Expose port (set via build arg; defaults to 3400 for local compose)
+ARG API_PORT=3400
+EXPOSE ${API_PORT}
 
 # Production command (can be overridden for worker mode)
 CMD ["node", "--max-old-space-size=6144", "dist/main", "--mode=api"]

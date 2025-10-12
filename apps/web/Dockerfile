@@ -40,8 +40,9 @@ RUN pnpm install --frozen-lockfile
 COPY apps/web ./apps/web/
 COPY packages/shared ./packages/shared/
 
-# Expose port (configurable via docker-compose)
-EXPOSE 3191
+# Expose port (set via build arg; defaults to 3401 for local compose)
+ARG PORT=3401
+EXPOSE ${PORT}
 
 # Development command (hot reload with turbopack) - stay in /app to access node_modules
 CMD ["pnpm", "--filter", "asset2go-web", "run", "dev"]
@@ -111,8 +112,9 @@ COPY --from=builder /app/apps/web/next.config.js ./apps/web/
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/apps/web/node_modules ./apps/web/node_modules
 
-# Expose port
-EXPOSE 3191
+# Expose port (set via build arg; defaults to 3401 for local compose)
+ARG PORT=3401
+EXPOSE ${PORT}
 
 # Set working directory to web app so Next.js finds .next directory
 WORKDIR /app/apps/web
