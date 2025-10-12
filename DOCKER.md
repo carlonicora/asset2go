@@ -245,6 +245,8 @@ docker compose up web -d
 docker compose up api -d
 ```
 
+> ℹ️ **Coolify deploys:** The compose file expects the external network `coolify` (Traefik proxy) to exist. On Coolify-managed hosts that network is created automatically; if you run elsewhere, create it once with `docker network create coolify`.
+
 ### 3. Verify
 
 - API: http://localhost:3400
