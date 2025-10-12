@@ -112,6 +112,9 @@ COPY --from=builder /app/apps/web/next.config.js ./apps/web/
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/apps/web/node_modules ./apps/web/node_modules
 
+# Ensure native addons (sharp) are correctly rebuilt in this stage
+RUN pnpm rebuild sharp
+
 # Expose port (set via build arg; defaults to 3401 for local compose)
 ARG PORT=3401
 EXPOSE ${PORT}
