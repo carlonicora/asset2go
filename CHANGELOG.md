@@ -1,3 +1,9 @@
+## [1.6.2](https://github.com/carlonicora/asset2go/compare/v1.6.1...v1.6.2) (2025-10-12)
+
+### 🐛 Bug Fixes
+
+* rename app ([53eff65](https://github.com/carlonicora/asset2go/commit/53eff65629be9290c0bb324505d6e436e341ab84))
+
 ## [1.6.1](https://github.com/carlonicora/asset2go/compare/v1.6.0...v1.6.1) (2025-10-12)
 
 ### 🐛 Bug Fixes
