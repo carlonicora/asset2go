@@ -95,8 +95,6 @@ docker-compose up
 
 This will start:
 
-- Neo4j database (http://localhost:7474)
-- Redis cache/queue (port 6379)
 - API server (http://localhost:3000)
 - Worker process
 - Web application (http://localhost:3191)
