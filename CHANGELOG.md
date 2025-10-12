@@ -1,3 +1,9 @@
+## [1.7.0](https://github.com/carlonicora/asset2go/compare/v1.6.2...v1.7.0) (2025-10-12)
+
+### 🚀 Features
+
+* add GPL license ([8383ce9](https://github.com/carlonicora/asset2go/commit/8383ce9d30c0eeedac0625dcd33599a86bf6a045))
+
 ## [1.6.2](https://github.com/carlonicora/asset2go/compare/v1.6.1...v1.6.2) (2025-10-12)
 
 ### 🐛 Bug Fixes
