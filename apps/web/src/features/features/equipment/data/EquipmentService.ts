@@ -2,7 +2,7 @@ import { AbstractService, HttpMethod, NextRef, PreviousRef } from "@/data/abstra
 import { EndpointCreator } from "@/data/EndpointCreator";
 import { EquipmentInput, EquipmentInterface } from "@/features/features/equipment/data/EquipmentInterface";
 import { Modules } from "@/modules/modules";
-import { EquipmentStatus } from "@assettrack/shared";
+import { EquipmentStatus } from "@asset2go/shared";
 
 export class EquipmentService extends AbstractService {
   static async findOne(params: { id: string }): Promise<EquipmentInterface> {

@@ -44,7 +44,7 @@ COPY packages/shared ./packages/shared/
 EXPOSE 3000
 
 # Development command (hot reload) - stay in /app to access tsconfig.json
-CMD ["pnpm", "--filter", "assettrack-api", "run", "dev"]
+CMD ["pnpm", "--filter", "asset2go-api", "run", "dev"]
 
 # =============================================================================
 # BUILDER TARGET (for production)

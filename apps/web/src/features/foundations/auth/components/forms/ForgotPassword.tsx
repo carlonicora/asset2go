@@ -53,7 +53,7 @@ export default function ForgotPassword() {
     <>
       <CardHeader data-testid="page-forgot-password-container">
         <CardTitle className="text-primary flex flex-col items-center pb-10 text-4xl">
-          <Image src="/logo.webp" alt="AssetTrack" width={100} height={100} priority />
+          <Image src="/logo.webp" alt="Asset2Go" width={100} height={100} priority />
           {t("foundations.auth.forgot_password")}
         </CardTitle>
         <CardDescription className="text-sm">

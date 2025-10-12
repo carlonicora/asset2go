@@ -45,7 +45,7 @@ export default async function middleware(request: NextRequest) {
     const state = searchParams.get("state");
 
     let path = null;
-    if (state && state.startsWith("AssetTrack")) {
+    if (state && state.startsWith("Asset2Go")) {
       path = decodeURIComponent(state.substring(5));
     }
 

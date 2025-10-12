@@ -1,5 +1,5 @@
 {
-  "name": "assettrack-web",
+  "name": "asset2go-web",
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -20,7 +20,7 @@
     "node": "22"
   },
   "dependencies": {
-    "@assettrack/shared": "workspace:*",
+    "@asset2go/shared": "workspace:*",
     "@aws-sdk/lib-storage": "^3.896.0",
     "@aws-sdk/s3-request-presigner": "^3.896.0",
     "@aws-sdk/xhr-http-handler": "^3.893.0",

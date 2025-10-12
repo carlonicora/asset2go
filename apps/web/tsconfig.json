@@ -37,8 +37,8 @@
     ],
     "paths": {
       "@/*": ["./src/*"],
-      "@assettrack/shared": ["../../packages/shared/src"],
-      "@assettrack/shared/*": ["../../packages/shared/src/*"]
+      "@asset2go/shared": ["../../packages/shared/src"],
+      "@asset2go/shared/*": ["../../packages/shared/src/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "**/*.mdx", "**/*.test.ts", ".next/types/**/*.ts"],

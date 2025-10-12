@@ -20,13 +20,13 @@ export async function generateSpecificMetadata(params: {
     title: title,
     description: description,
     keywords: [],
-    publisher: "AssetTrack",
+    publisher: "Asset2Go",
     openGraph: {
       type: "website",
       title: title,
       description: description,
       url: url,
-      siteName: "AssetTrack",
+      siteName: "Asset2Go",
     },
     twitter: {
       card: "summary_large_image",

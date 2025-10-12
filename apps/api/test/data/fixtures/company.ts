@@ -2,7 +2,7 @@ export const COMPANIES = {
   CompanyOne: {
     id: "6eacaa6d-6dbd-4631-8902-2f6c084ebc34",
     availableTokens: 1000000,
-    name: "AssetTrack",
+    name: "Asset2Go",
     configurations: {
       aiApiKey: "apiKey",
       aiMaxConcurrentRequests: 100,

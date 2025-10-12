@@ -7,7 +7,7 @@ test.describe("Authenticated Homepage", () => {
   });
 
   test("should load homepage and display authenticated content", async ({ page }) => {
-    await expect(page).toHaveTitle(/.*AssetTrack.*/i);
+    await expect(page).toHaveTitle(/.*Asset2Go.*/i);
     await expect(page.locator('[data-testid="page-homepage-container"]')).toBeVisible();
   });
 

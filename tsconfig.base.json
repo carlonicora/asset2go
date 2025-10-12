@@ -43,8 +43,8 @@
     // Path Mapping
     "baseUrl": ".",
     "paths": {
-      "@assettrack/shared": ["./packages/shared/src"],
-      "@assettrack/shared/*": ["./packages/shared/src/*"]
+      "@asset2go/shared": ["./packages/shared/src"],
+      "@asset2go/shared/*": ["./packages/shared/src/*"]
     }
   },
   "exclude": [

@@ -63,7 +63,7 @@ export default function Login() {
     <>
       <CardHeader data-testid="page-login-container">
         <CardTitle className="text-primary flex flex-col items-center pb-10 text-4xl">
-          <Image src="/logo.webp" alt="AssetTrack" width={100} height={100} priority />
+          <Image src="/logo.webp" alt="Asset2Go" width={100} height={100} priority />
           {t("foundations.auth.login")}
         </CardTitle>
 

@@ -186,7 +186,7 @@
     "auth": {
       "accept_invitation": "Accept Invitation",
       "account_activated": "Account Activated",
-      "account_activated_description": "Your account is ready. Log in to access AssetTrack.",
+      "account_activated_description": "Your account is ready. Log in to access Asset2Go.",
       "activation_description": "Your account has been successfully activated. You will be redirected to the login page shortly.",
       "activation_wait": "Please wait while your account is being activated...",
       "add_email_to_reset": "Please add your email to reset your password.",
@@ -219,17 +219,17 @@
       "forgot_password": "Forgot Password",
       "gdpr_consent_text": "I accept the processing of my personal data according to the Privacy Policy (GDPR) and Terms of Service",
       "login": "Login",
-      "login_description": "Log in to AssetTrack AI to manage your law firm.",
+      "login_description": "Log in to Asset2Go AI to manage your law firm.",
       "password": "Password",
       "password_reset": "Reset Password",
       "register": "Register",
       "register_confirmation": "Thank you for registering. Check your email for the confirmation link.",
-      "register_description": "Registering with AssetTrack creates a new company. If you wish to join an existing company, contact its administrators.",
+      "register_description": "Registering with Asset2Go creates a new company. If you wish to join an existing company, contact its administrators.",
       "reset_confirmation": "If your email is registered in our system, you will receive an email with instructions to reset your password.",
       "reset_password": "You can reset your account password from this page.",
       "reset_success": "Password Reset Successful",
       "reset_success_description": "Your password has been successfully reset. You will be redirected to the login page shortly.",
-      "select_password": "Please add your preferred password to access AssetTrack."
+      "select_password": "Please add your preferred password to access Asset2Go."
     },
     "company": {
       "click_drag_logo": "Click or drag a logo to upload it",
@@ -306,7 +306,7 @@
         "resend_activation": "Resend Activation Email"
       },
       "delete": {
-        "description": "Deleting this user will remove their ability to access AssetTrack AI. All their knowledge will remain in the system.",
+        "description": "Deleting this user will remove their ability to access Asset2Go AI. All their knowledge will remain in the system.",
         "subtitle": "Are you sure you want to delete this user?",
         "title": "Delete User"
       },
@@ -342,7 +342,7 @@
         }
       },
       "reactivate": {
-        "description": "Are you sure you want to reactivate {name}'s account? The user will be able to access AssetTrack again.",
+        "description": "Are you sure you want to reactivate {name}'s account? The user will be able to access Asset2Go again.",
         "subtitle": "Are you sure you want to reactivate this user?",
         "title": "Reactivate User"
       },
@@ -390,7 +390,7 @@
       "create": "Creation",
       "update": "Last Update"
     },
-    "description": "AssetTrack is a platform for managing company assets assigned to employees.",
+    "description": "Asset2Go is a platform for managing company assets assigned to employees.",
     "edit": {
       "create": {
         "description": "Create a new {type}",
@@ -449,7 +449,7 @@
     "settings_sidebar": "{item, select, crm {Customer Relationship Management} other {N/A}}",
     "show_password": "Show Password",
     "status": "Status",
-    "title": "AssetTrack"
+    "title": "Asset2Go"
   },
   "types": {
     "companies": "{count, plural, =1 {Company} other {Companies}}",

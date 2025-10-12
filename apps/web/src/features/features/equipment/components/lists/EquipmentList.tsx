@@ -8,7 +8,7 @@ import { EquipmentService } from "@/features/features/equipment/data/EquipmentSe
 import "@/features/features/equipment/hooks/useEquipmentTableStructure";
 import { DataListRetriever, useDataListRetriever } from "@/hooks/useDataListRetriever";
 import { Modules } from "@/modules/modules";
-import { EquipmentStatus } from "@assettrack/shared";
+import { EquipmentStatus } from "@asset2go/shared";
 import { useTranslations } from "next-intl";
 import { ReactNode } from "react";
 

@@ -66,7 +66,7 @@ importers:
 
   apps/api:
     dependencies:
-      '@assettrack/shared':
+      '@asset2go/shared':
         specifier: workspace:*
         version: link:../../packages/shared
       '@aws-sdk/client-s3':
@@ -406,7 +406,7 @@ importers:
 
   apps/web:
     dependencies:
-      '@assettrack/shared':
+      '@asset2go/shared':
         specifier: workspace:*
         version: link:../../packages/shared
       '@aws-sdk/lib-storage':

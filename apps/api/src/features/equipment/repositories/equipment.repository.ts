@@ -1,4 +1,4 @@
-import { EquipmentStatus } from "@assettrack/shared";
+import { EquipmentStatus } from "@asset2go/shared";
 import { HttpException, HttpStatus, Injectable, OnModuleInit } from "@nestjs/common";
 import { JsonApiCursorInterface } from "src/core/jsonapi/interfaces/jsonapi.cursor.interface";
 import { updateRelationshipQuery } from "src/core/neo4j/queries/update.relationship";

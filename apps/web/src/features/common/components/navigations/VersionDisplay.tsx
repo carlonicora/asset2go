@@ -47,7 +47,7 @@ export default function VersionDisplay() {
   return (
     <div className="text-muted-foreground flex w-full flex-col text-xs">
       <div className="flex w-full flex-row justify-between">
-        <div className="flex w-1/2">AssetTrack Version</div>
+        <div className="flex w-1/2">Asset2Go Version</div>
         <div className="flex w-1/2">{getAppVersion()}</div>
       </div>
       <div className="flex w-full flex-row justify-between">

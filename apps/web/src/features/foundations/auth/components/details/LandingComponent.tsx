@@ -18,7 +18,7 @@ export default function LandingComponent() {
     <>
       <CardHeader className="mb-4" data-testid="page-pre-login-container">
         <CardTitle className="text-primary flex flex-col items-center gap-y-8 pb-8 text-4xl">
-          <Image src="/logo.webp" alt="AssetTrack" width={100} height={100} priority />
+          <Image src="/logo.webp" alt="Asset2Go" width={100} height={100} priority />
           {t(`generic.title`)}
         </CardTitle>
         <CardDescription className="flex w-full justify-center text-center text-sm">

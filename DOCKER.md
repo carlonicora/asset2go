@@ -1,6 +1,6 @@
 # Docker Setup Guide
 
-Complete guide for running AssetTrack with Docker Compose, including both development and production configurations.
+Complete guide for running Asset2Go with Docker Compose, including both development and production configurations.
 
 ## Table of Contents
 
@@ -20,7 +20,7 @@ Complete guide for running AssetTrack with Docker Compose, including both develo
 
 ## Overview
 
-The AssetTrack monorepo uses Docker Compose to run three application services:
+The Asset2Go monorepo uses Docker Compose to run three application services:
 
 - **API** (NestJS) - Backend API server on port 3400
 - **Worker** (NestJS) - Background job processor
@@ -30,7 +30,7 @@ The AssetTrack monorepo uses Docker Compose to run three application services:
 
 ## Service Architecture
 
-AssetTrack is designed as a microservices architecture with three independent services that can be deployed together or separately based on your scaling needs.
+Asset2Go is designed as a microservices architecture with three independent services that can be deployed together or separately based on your scaling needs.
 
 ### Service Responsibilities
 
@@ -158,7 +158,7 @@ NEXT_PUBLIC_ADDRESS=http://localhost:3401
 NEO4J_URI=bolt://localhost:7687
 NEO4J_USER=neo4j
 NEO4J_PASSWORD=your-password
-NEO4J_DATABASE=assettrack
+NEO4J_DATABASE=asset2go
 
 # Cache & Queue (REQUIRED)
 REDIS_HOST=localhost
@@ -167,7 +167,7 @@ REDIS_PASSWORD=your-redis-password
 
 # Object Storage (REQUIRED)
 S3_ENDPOINT=http://localhost:9000/
-S3_BUCKET=assettrack
+S3_BUCKET=asset2go
 S3_ACCESS_KEY_ID=your-access-key
 S3_SECRET_ACCESS_KEY=your-secret-key
 S3_REGION=us-east-1
@@ -898,7 +898,7 @@ server {
 │  │ Port 3400│         │          │         │ Port 3401│        │
 │  └────┬─────┘         └────┬─────┘         └────┬─────┘        │
 │       │                    │                     │              │
-│       │    Docker Network: assettrack-network   │              │
+│       │    Docker Network: asset2go-network   │              │
 │       │                    │                     │              │
 └───────┼────────────────────┼─────────────────────┼──────────────┘
         │                    │                     │
@@ -1081,7 +1081,7 @@ API_INTERNAL_URL=http://api:3400/  # Works when all services on same docker-comp
 NEO4J_URI=bolt://localhost:7687  # REQUIRED: Neo4j connection URI
 NEO4J_USER=neo4j                 # REQUIRED: Neo4j username
 NEO4J_PASSWORD=your-password     # REQUIRED: Neo4j password
-NEO4J_DATABASE=assettrack        # REQUIRED: Neo4j database name
+NEO4J_DATABASE=asset2go        # REQUIRED: Neo4j database name
 
 # =============================================================================
 # CACHE & QUEUE (REQUIRED)
@@ -1090,14 +1090,14 @@ REDIS_HOST=localhost             # REQUIRED: Redis host
 REDIS_PORT=6379                  # REQUIRED: Redis port
 REDIS_PASSWORD=your-password     # REQUIRED: Redis password
 REDIS_USERNAME=default           # OPTIONAL: Redis username (default: "default")
-QUEUE=assettrack                 # REQUIRED: Queue name for BullMQ
+QUEUE=asset2go                 # REQUIRED: Queue name for BullMQ
 
 # =============================================================================
 # OBJECT STORAGE (REQUIRED)
 # =============================================================================
 S3_TYPE=minio                    # OPTIONAL: 'minio' or 's3' (default: minio)
 S3_ENDPOINT=http://localhost:9000/  # REQUIRED: S3/MinIO endpoint
-S3_BUCKET=assettrack             # REQUIRED: Bucket name
+S3_BUCKET=asset2go             # REQUIRED: Bucket name
 S3_ACCESS_KEY_ID=your-access-key # REQUIRED: Access key
 S3_SECRET_ACCESS_KEY=your-secret # REQUIRED: Secret key
 S3_REGION=us-east-1              # REQUIRED: Region
@@ -1192,7 +1192,7 @@ docker compose exec api printenv | grep NEO4J
 3. Check both services are on same network:
    ```bash
    docker compose ps
-   # Both should show "assettrack-network"
+   # Both should show "asset2go-network"
    ```
 
 4. If still failing, restart with network reset:
@@ -1383,8 +1383,8 @@ docker compose up --scale worker=3
 # List networks
 docker network ls
 
-# Inspect assettrack network
-docker network inspect assettrack_assettrack-network
+# Inspect asset2go network
+docker network inspect asset2go_asset2go-network
 
 # Test connectivity between services
 docker compose exec web ping api
@@ -1400,7 +1400,7 @@ docker compose down
 # Stop and remove volumes
 docker compose down -v
 
-# Remove all AssetTrack containers and images
+# Remove all Asset2Go containers and images
 docker compose down --rmi all --volumes
 
 # Clean up Docker system

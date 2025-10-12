@@ -153,7 +153,7 @@ export default function CommonSidebar() {
                 className="max-h-32 object-contain p-4"
                 height={300}
                 width={300}
-                alt={"AssetTrack"}
+                alt={"Asset2Go"}
                 priority
               />
               <h2 className="">{t(`generic.title`)}</h2>
@@ -164,7 +164,7 @@ export default function CommonSidebar() {
               className="max-h-10 object-contain"
               height={300}
               width={300}
-              alt={"AssetTrack"}
+              alt={"Asset2Go"}
               priority
             />
           )}

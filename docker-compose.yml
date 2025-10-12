@@ -24,7 +24,7 @@ services:
       context: .
       dockerfile: apps/api/Dockerfile
       target: ${DOCKER_BUILD_TARGET:-development}
-    container_name: assettrack-api
+    container_name: asset2go-api
     ports:
       - "${API_PORT:-3400}:${API_PORT:-3400}"
     environment:
@@ -120,7 +120,7 @@ services:
       - api-node-modules:/app/node_modules
       - api-app-node-modules:/app/apps/api/node_modules
     networks:
-      - assettrack-network
+      - asset2go-network
 
   # ---------------------------------------------------------------------------
   # Worker (Background Job Processing)
@@ -130,7 +130,7 @@ services:
       context: .
       dockerfile: apps/api/Dockerfile
       target: ${DOCKER_BUILD_TARGET:-development}
-    container_name: assettrack-worker
+    container_name: asset2go-worker
     environment:
       # Build & Application Mode
       - DOCKER_BUILD_TARGET=${DOCKER_BUILD_TARGET:-development}
@@ -199,14 +199,14 @@ services:
       - worker-node-modules:/app/node_modules
       - worker-app-node-modules:/app/apps/api/node_modules
     networks:
-      - assettrack-network
+      - asset2go-network
     # Worker uses same Dockerfile as API but different commands based on DOCKER_BUILD_TARGET
     command: >
       sh -c '
       if [ "$${DOCKER_BUILD_TARGET:-development}" = "production" ]; then
         cd /app/apps/api && node --max-old-space-size=6144 dist/main --mode=worker;
       else
-        pnpm --filter assettrack-api run start:worker:dev;
+        pnpm --filter asset2go-api run start:worker:dev;
       fi
       '
 
@@ -222,7 +222,7 @@ services:
         - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
         - NEXT_PUBLIC_ADDRESS=${NEXT_PUBLIC_ADDRESS}
         - NEXT_PUBLIC_VAPID_PUBLIC_KEY=${NEXT_PUBLIC_VAPID_PUBLIC_KEY}
-    container_name: assettrack-web
+    container_name: asset2go-web
     ports:
       - "${PORT:-3401}:${PORT:-3401}"
     environment:
@@ -255,7 +255,7 @@ services:
       # Uncomment ONLY when DOCKER_BUILD_TARGET=development
       # - web-next:/app/apps/web/.next
     networks:
-      - assettrack-network
+      - asset2go-network
 
 # =============================================================================
 # PERSISTENT VOLUMES
@@ -281,5 +281,5 @@ volumes:
 # NETWORKS
 # =============================================================================
 networks:
-  assettrack-network:
+  asset2go-network:
     driver: bridge

@@ -1,4 +1,4 @@
-# AssetTrack
+# Asset2Go
 
 A modern monorepo-based equipment loan tracket platform built with NestJS and Next.js. It supports muti-tenancy customers.
 
@@ -9,7 +9,7 @@ This project is structured as a monorepo using pnpm workspaces and Turborepo for
 ### Project Structure
 
 ```
-assettrack/
+asset2go/
 ├── apps/
 │   ├── api/               # NestJS backend application
 │   │   ├── src/          # Source code
@@ -44,7 +44,7 @@ assettrack/
 
    ```bash
    git clone <repository-url>
-   cd assettrack
+   cd asset2go
    ```
 
 2. **Install dependencies**
@@ -103,7 +103,7 @@ This will start:
 
 ## 📦 Workspace Packages
 
-### @assettrack/api
+### @asset2go/api
 
 NestJS backend with:
 
@@ -111,7 +111,7 @@ NestJS backend with:
 - WebSocket support via Socket.io
 - Background job processing with BullMQ
 
-### @assettrack/web
+### @asset2go/web
 
 Next.js 15 frontend with:
 
@@ -121,7 +121,7 @@ Next.js 15 frontend with:
 - React Hook Form + Zod validation
 - Real-time updates via Socket.io
 
-### @assettrack/shared
+### @asset2go/shared
 
 Shared package containing:
 
@@ -200,17 +200,17 @@ Build production images:
 
 ```bash
 # Build API image
-docker build -f apps/api/Dockerfile -t assettrack-api .
+docker build -f apps/api/Dockerfile -t asset2go-api .
 
 # Build Web image
-docker build -f apps/web/Dockerfile -t assettrack-web .
+docker build -f apps/web/Dockerfile -t asset2go-web .
 ```
 
 Run production containers:
 
 ```bash
-docker run -p 3000:3000 assettrack-api
-docker run -p 3191:3191 assettrack-web
+docker run -p 3000:3000 asset2go-api
+docker run -p 3191:3191 asset2go-web
 ```
 
 ## 🧪 Testing

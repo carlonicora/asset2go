@@ -79,7 +79,7 @@ export const baseConfig = {
       batching: process.env.LOKI_BATCHING !== "false",
       interval: parseInt(process.env.LOKI_INTERVAL || "30"),
       labels: {
-        application: process.env.LOKI_APP_LABEL || "assettrack-api",
+        application: process.env.LOKI_APP_LABEL || "asset2go-api",
         environment: process.env.ENV || "development",
       },
     },
@@ -87,7 +87,7 @@ export const baseConfig = {
   tempo: {
     enabled: process.env.TEMPO_ENABLED === "true",
     endpoint: process.env.TEMPO_ENDPOINT || "http://localhost:4318/v1/traces",
-    serviceName: process.env.TEMPO_SERVICE_NAME || "assettrack-api",
+    serviceName: process.env.TEMPO_SERVICE_NAME || "asset2go-api",
     serviceVersion: process.env.TEMPO_SERVICE_VERSION || "1.0.0",
   },
   s3: {

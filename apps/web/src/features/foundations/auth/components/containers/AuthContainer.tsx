@@ -24,7 +24,7 @@ function InnerAuthContainer() {
   if (activeComponent === null)
     return (
       <div className="max-w-sm">
-        <Image src="/logo.webp" alt="AssetTrack" width={100} height={100} className="animate-spin-slow" priority />
+        <Image src="/logo.webp" alt="Asset2Go" width={100} height={100} className="animate-spin-slow" priority />
       </div>
     );
 

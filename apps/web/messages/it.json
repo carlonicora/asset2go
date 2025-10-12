@@ -186,7 +186,7 @@
     "auth": {
       "accept_invitation": "Accetta Invito",
       "account_activated": "Account Attivato",
-      "account_activated_description": "Il tuo account è pronto. Accedi per accedere ad AssetTrack.",
+      "account_activated_description": "Il tuo account è pronto. Accedi per accedere ad Asset2Go.",
       "activation_description": "Il tuo account è stato attivato con successo. Verrai reindirizzato alla pagina di accesso a breve.",
       "activation_wait": "Attendere mentre il tuo account viene attivato...",
       "add_email_to_reset": "Si prega di aggiungere la propria email per reimpostare la password.",
@@ -219,17 +219,17 @@
       "forgot_password": "Password Dimenticata",
       "gdpr_consent_text": "Accetto il trattamento dei miei dati personali secondo la Normativa sulla Privacy (GDPR) e i Termini di Servizio",
       "login": "Accedi",
-      "login_description": "Accedi ad AssetTrack per gestire i beni aziendali assegnati ai dipendenti.",
+      "login_description": "Accedi ad Asset2Go per gestire i beni aziendali assegnati ai dipendenti.",
       "password": "Password",
       "password_reset": "Reimposta Password",
       "register": "Registrati",
       "register_confirmation": "Grazie per esserti registrato. Controlla la tua email per il link di conferma.",
-      "register_description": "Registrarsi ad AssetTrack crea una nuova azienda. Se desideri unirti ad un'azienda esistente, contatta gli amministratori della stessa.",
+      "register_description": "Registrarsi ad Asset2Go crea una nuova azienda. Se desideri unirti ad un'azienda esistente, contatta gli amministratori della stessa.",
       "reset_confirmation": "Se la tua email è registrata nel nostro sistema, riceverai un'email con le istruzioni per reimpostare la tua password.",
       "reset_password": "Puoi reimpostare la password del tuo account da questa pagina.",
       "reset_success": "Reimpostazione della Password Riuscita",
       "reset_success_description": "La tua password è stata reimpostata con successo. Verrai reindirizzato alla pagina di accesso a breve.",
-      "select_password": "Si prega di aggiungere la propria password preferita per accedere ad AssetTrack."
+      "select_password": "Si prega di aggiungere la propria password preferita per accedere ad Asset2Go."
     },
     "company": {
       "click_drag_logo": "Clicca o trascina un logo per caricarlo",
@@ -306,7 +306,7 @@
         "resend_activation": "Reinvia Email di Attivazione"
       },
       "delete": {
-        "description": "Eliminando questo utente verrà rimossa la sua capacità di accedere ad AssetTrack. Tutte le sue conoscenze rimarranno nel sistema.",
+        "description": "Eliminando questo utente verrà rimossa la sua capacità di accedere ad Asset2Go. Tutte le sue conoscenze rimarranno nel sistema.",
         "subtitle": "Sei sicuro di voler eliminare questo utente?",
         "title": "Elimina Utente"
       },
@@ -342,7 +342,7 @@
         }
       },
       "reactivate": {
-        "description": "Sei sicuro di voler riattivare l'account di {name}? L'utente potrà accedere nuovamente ad AssetTrack.",
+        "description": "Sei sicuro di voler riattivare l'account di {name}? L'utente potrà accedere nuovamente ad Asset2Go.",
         "subtitle": "Sei sicuro di voler riattivare questo utente?",
         "title": "Riattiva Utente"
       },
@@ -390,7 +390,7 @@
       "create": "Creazione",
       "update": "Ultimo Aggiornamento"
     },
-    "description": "AssetTrack è una piattaforma di gestione dei beni aziendali assegnati ai dipendenti.",
+    "description": "Asset2Go è una piattaforma di gestione dei beni aziendali assegnati ai dipendenti.",
     "edit": {
       "create": {
         "description": "Crea un nuovo {type}",
@@ -449,7 +449,7 @@
     "settings_sidebar": "{item, select, crm {Customer Relationship Management} other {N/A}}",
     "show_password": "Mostra Password",
     "status": "Stato",
-    "title": "AssetTrack"
+    "title": "Asset2Go"
   },
   "types": {
     "companies": "{count, plural, =1 {Azienda} other {Aziende}}",

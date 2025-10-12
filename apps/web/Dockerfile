@@ -44,7 +44,7 @@ COPY packages/shared ./packages/shared/
 EXPOSE 3191
 
 # Development command (hot reload with turbopack) - stay in /app to access node_modules
-CMD ["pnpm", "--filter", "assettrack-web", "run", "dev"]
+CMD ["pnpm", "--filter", "asset2go-web", "run", "dev"]
 
 # =============================================================================
 # BUILDER TARGET (for production)
@@ -118,4 +118,4 @@ EXPOSE 3191
 WORKDIR /app/apps/web
 
 # Production command
-CMD ["pnpm", "--filter", "assettrack-web", "run", "start"]
+CMD ["pnpm", "--filter", "asset2go-web", "run", "start"]

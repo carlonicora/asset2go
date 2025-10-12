@@ -115,23 +115,16 @@ export default function CompanyLicense() {
         onSubmit={form.handleSubmit(onSubmit)}
         className="relative flex min-h-screen w-full flex-col items-center justify-center"
       >
-        <div className="absolute top-4 left-4 z-0">
-          <Image
-            src={`/logo.webp`}
-            className="object-contain p-4"
-            height={300}
-            width={300}
-            alt={"AssetTrack"}
-            priority
-          />
+        <div className="absolute left-4 top-4 z-0">
+          <Image src={`/logo.webp`} className="object-contain p-4" height={300} width={300} alt={"Asset2Go"} priority />
         </div>
-        <Card className="z-10 w-3xl">
+        <Card className="w-3xl z-10">
           {hasRole(AuthRole.CompanyAdministrator) ? (
             <>
               <CardHeader>
                 <CardTitle>Company License Required</CardTitle>
                 <CardDescription className={`flex w-full flex-col`}>
-                  <div>You need to activate your license to use AssetTrack.</div>
+                  <div>You need to activate your license to use Asset2Go.</div>
                   <div>
                     <span>To obtain your license, please visit</span>
                     <Link href="https://app.carlonicora.com" target="_blank" className={`text-primary`}>

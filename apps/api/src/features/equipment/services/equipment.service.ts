@@ -1,4 +1,4 @@
-import { EquipmentStatus } from "@assettrack/shared";
+import { EquipmentStatus } from "@asset2go/shared";
 import { ForbiddenException, Injectable, NotFoundException } from "@nestjs/common";
 import { ClsService } from "nestjs-cls";
 import { JsonApiDataInterface } from "src/core/jsonapi/interfaces/jsonapi.data.interface";

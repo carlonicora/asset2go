@@ -1,4 +1,4 @@
-import { EquipmentStatus } from "@assettrack/shared";
+import { EquipmentStatus } from "@asset2go/shared";
 import {
   Body,
   Controller,

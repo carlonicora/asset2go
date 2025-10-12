@@ -7,7 +7,7 @@ test.describe("Login", () => {
   });
 
   test("should show landing page when not logged in", async ({ page }) => {
-    await expect(page).toHaveTitle(/.*AssetTrack.*/i);
+    await expect(page).toHaveTitle(/.*Asset2Go.*/i);
   });
 
   test("should have login functionality visible", async ({ page }) => {
