@@ -114,7 +114,7 @@ services:
       - UPC_ENABLED=${UPC_ENABLED}
       - UPC_API_KEY=${UPC_API_KEY}
     volumes:
-      - ./.env:/app/.env:ro
+      # - ./.env:/app/.env:ro
       - ./apps/api/src:/app/apps/api/src
       - ./packages/shared:/app/packages/shared
       - api-node-modules:/app/node_modules
@@ -193,7 +193,7 @@ services:
       - UPC_ENABLED=${UPC_ENABLED}
       - UPC_API_KEY=${UPC_API_KEY}
     volumes:
-      - ./.env:/app/.env:ro
+      # - ./.env:/app/.env:ro
       - ./apps/api/src:/app/apps/api/src
       - ./packages/shared:/app/packages/shared
       - worker-node-modules:/app/node_modules
@@ -243,7 +243,7 @@ services:
       # Image Sources
       - IMAGE_SOURCES=${IMAGE_SOURCES}
     volumes:
-      - ./.env:/app/.env:ro
+      # - ./.env:/app/.env:ro
       # Development source code volumes
       - ./apps/web/src:/app/apps/web/src
       - ./apps/web/public:/app/apps/web/public
