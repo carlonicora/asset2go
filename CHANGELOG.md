@@ -1,3 +1,9 @@
+## [1.7.1](https://github.com/carlonicora/asset2go/compare/v1.7.0...v1.7.1) (2025-10-12)
+
+### 🐛 Bug Fixes
+
+* correct dev dependencies ([214c443](https://github.com/carlonicora/asset2go/commit/214c4432bac775dcf84d7eb1148b944d245fd4cc))
+
 ## [1.7.0](https://github.com/carlonicora/asset2go/compare/v1.6.2...v1.7.0) (2025-10-12)
 
 ### 🚀 Features
