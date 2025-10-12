@@ -1,3 +1,9 @@
+## [1.6.1](https://github.com/carlonicora/assettrack/compare/v1.6.0...v1.6.1) (2025-10-12)
+
+### 🐛 Bug Fixes
+
+* remove .env file from docker-compose ([ac55f4d](https://github.com/carlonicora/assettrack/commit/ac55f4dab91df3064e838459613786bfea56dd0e))
+
 ## [1.6.0](https://github.com/carlonicora/assettrack/compare/v1.5.1...v1.6.0) (2025-10-11)
 
 ### 🚀 Features
