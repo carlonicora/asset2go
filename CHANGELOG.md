@@ -1,3 +1,9 @@
+## [1.7.3](https://github.com/carlonicora/asset2go/compare/v1.7.2...v1.7.3) (2025-10-12)
+
+### 🐛 Bug Fixes
+
+* add coolify network to support coolify ([a1578e0](https://github.com/carlonicora/asset2go/commit/a1578e01962c306e605bb44034efc08cbfd8bb2a))
+
 ## [1.7.2](https://github.com/carlonicora/asset2go/compare/v1.7.1...v1.7.2) (2025-10-12)
 
 ### 🐛 Bug Fixes
