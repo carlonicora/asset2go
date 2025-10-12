@@ -1,3 +1,9 @@
+## [1.7.6](https://github.com/carlonicora/asset2go/compare/v1.7.5...v1.7.6) (2025-10-12)
+
+### 🐛 Bug Fixes
+
+* correct usage of webp in docker ([d82607c](https://github.com/carlonicora/asset2go/commit/d82607c8e15f3da9d2e28a8a2440ab3b83d430ab))
+
 ## [1.7.5](https://github.com/carlonicora/asset2go/compare/v1.7.4...v1.7.5) (2025-10-12)
 
 ### 🐛 Bug Fixes
