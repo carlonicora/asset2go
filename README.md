@@ -311,7 +311,7 @@ See `.env.example` for a complete list of all available configuration options.
 
 ## 📄 License
 
-UNLICENSED - Private repository
+GPL-3.0-or-later
 
 ## 🆘 Support
 
