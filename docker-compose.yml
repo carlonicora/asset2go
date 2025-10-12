@@ -116,7 +116,7 @@ services:
     volumes:
       # - ./.env:/app/.env:ro
       - ./apps/api/src:/app/apps/api/src
-      - ./packages/shared:/app/packages/shared
+      # Development overrides add packages/shared bind mount (see docker-compose.dev.yml)
       - api-node-modules:/app/node_modules
       - api-app-node-modules:/app/apps/api/node_modules
     networks:
@@ -195,7 +195,7 @@ services:
     volumes:
       # - ./.env:/app/.env:ro
       - ./apps/api/src:/app/apps/api/src
-      - ./packages/shared:/app/packages/shared
+      # Development overrides add packages/shared bind mount (see docker-compose.dev.yml)
       - worker-node-modules:/app/node_modules
       - worker-app-node-modules:/app/apps/api/node_modules
     networks:
@@ -244,10 +244,9 @@ services:
       - IMAGE_SOURCES=${IMAGE_SOURCES}
     volumes:
       # - ./.env:/app/.env:ro
-      # Development source code volumes
+      # Development source code volumes (additional mounts available via docker-compose.dev.yml)
       - ./apps/web/src:/app/apps/web/src
       - ./apps/web/public:/app/apps/web/public
-      - ./packages/shared:/app/packages/shared
       # Named volumes for node_modules (both dev and prod need these)
       - web-node-modules:/app/node_modules
       - web-app-node-modules:/app/apps/web/node_modules

@@ -1,0 +1,12 @@
+services:
+  api:
+    volumes:
+      - ./packages/shared:/app/packages/shared
+
+  worker:
+    volumes:
+      - ./packages/shared:/app/packages/shared
+
+  web:
+    volumes:
+      - ./packages/shared:/app/packages/shared

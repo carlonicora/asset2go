@@ -190,14 +190,14 @@ NEXT_PUBLIC_VAPID_PUBLIC_KEY=your-public-key
 Run all three services together on a single machine:
 
 ```bash
-# Build all images
+# Build base images (no source mounts required)
 docker compose build
 
-# Start all services
-docker compose up
+# Start all services with development overrides (adds source + shared mounts)
+docker compose -f docker-compose.yml -f docker-compose.dev.yml up
 
 # Or start in background
-docker compose up -d
+docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d
 ```
 
 **Use this when:**
@@ -208,7 +208,7 @@ docker compose up -d
 
 #### Option B: Individual Services (Distributed - Recommended for Production)
 
-Run specific services for horizontal scaling and distributed deployment:
+Run specific services for horizontal scaling and distributed deployment. Use only the base `docker-compose.yml` so the container keeps the compiled packages from the image:
 
 ```bash
 # API only
@@ -253,7 +253,7 @@ docker compose up api -d
 
 ## Development Mode
 
-Development mode enables hot-reload for rapid development with live code changes.
+Development mode enables hot-reload for rapid development with live code changes. Combine the base compose file with `docker-compose.dev.yml` to add the necessary source and shared bind mounts.
 
 ### Configuration
 
@@ -275,6 +275,8 @@ NODE_ENV=development
 
 The following directories are mounted for hot-reload:
 
+These mounts are defined in `docker-compose.dev.yml`:
+
 ```yaml
 # Web Service
 ./apps/web/src       -> /app/apps/web/src
@@ -292,15 +294,15 @@ The following directories are mounted for hot-reload:
 # Build development images
 docker compose build
 
-# Start in development mode
-docker compose up
+# Start in development mode (adds dev overrides)
+docker compose -f docker-compose.yml -f docker-compose.dev.yml up
 
 # View logs
-docker compose logs -f web
-docker compose logs -f api
+docker compose -f docker-compose.yml -f docker-compose.dev.yml logs -f web
+docker compose -f docker-compose.yml -f docker-compose.dev.yml logs -f api
 
 # Stop services
-docker compose down
+docker compose -f docker-compose.yml -f docker-compose.dev.yml down
 ```
 
 ### Code Changes
@@ -310,9 +312,9 @@ When running in development mode:
 - ✅ No rebuild needed for most changes
 - ⚠️ Changes to `package.json`, `Dockerfile`, or dependencies require rebuild:
   ```bash
-  docker compose down
+  docker compose -f docker-compose.yml -f docker-compose.dev.yml down
   docker compose build
-  docker compose up
+  docker compose -f docker-compose.yml -f docker-compose.dev.yml up
   ```
 
 ## Production Mode
@@ -347,10 +349,10 @@ The production build:
 ### Commands
 
 ```bash
-# Build production images
+# Build production images (base compose only)
 docker compose build
 
-# Start in production mode
+# Start in production mode (do NOT include docker-compose.dev.yml)
 docker compose up -d
 
 # Check status
@@ -366,6 +368,8 @@ docker compose down
 ### Important Notes
 
 ⚠️ **Volume Mounts**: The `.next` volume mount MUST remain commented out in production mode, otherwise it will overwrite the built files with an empty directory.
+
+⚠️ **Shared Package**: Do not mount `./packages/shared` in production. The base compose file keeps the compiled output baked into the image so `@asset2go/shared` resolves correctly at runtime.
 
 ⚠️ **Environment Variables**: Next.js requires build-time environment variables. If you change `NEXT_PUBLIC_*` variables, you must rebuild:
 ```bash
