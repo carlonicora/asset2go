@@ -1,3 +1,21 @@
+## [1.7.9](https://github.com/carlonicora/asset2go/compare/v1.7.8...v1.7.9) (2025-10-13)
+
+### 🐛 Bug Fixes
+
+* centralise environment variables in package ([dda0b46](https://github.com/carlonicora/asset2go/commit/dda0b463c9b232ace046ced58be98f5b3dcd23da))
+* correct coolify network ([021494f](https://github.com/carlonicora/asset2go/commit/021494fa4b11507e9e25b54b4d75da282d61c890))
+* correct docker management ([f08fcac](https://github.com/carlonicora/asset2go/commit/f08fcac4e0152d99d1ffbb4599e92878a02b1daa))
+* simplify docker-compose structure and remove critical paths ([ed08f9c](https://github.com/carlonicora/asset2go/commit/ed08f9c61fa9d3f536187024ccd86bd2196c46aa))
+* simplify management of coolify in docker ([50a14dc](https://github.com/carlonicora/asset2go/commit/50a14dc334e26b330edcbd473db842fe71d1c1eb))
+
+### 📚 Documentation
+
+* update docker documentation ([a3d3f3d](https://github.com/carlonicora/asset2go/commit/a3d3f3dd208410f8db7f8e2aad881c4a46084afa))
+
+### 📦 Code Refactoring
+
+* centralise Dockerfile ([1e56a7c](https://github.com/carlonicora/asset2go/commit/1e56a7c50f97924a5c37ea490bc730a2537ca73a))
+
 ## [1.7.8](https://github.com/carlonicora/asset2go/compare/v1.7.7...v1.7.8) (2025-10-13)
 
 ### 🐛 Bug Fixes
