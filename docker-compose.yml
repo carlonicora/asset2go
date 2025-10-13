@@ -83,8 +83,8 @@ services:
   api:
     build:
       context: .
-      dockerfile: apps/api/Dockerfile
-      target: production
+      dockerfile: Dockerfile
+      target: api-production
       args:
         - API_PORT=${API_PORT:-3400}
     ports:
@@ -118,6 +118,12 @@ services:
       CORS_PREFLIGHT_CONTINUE: ${CORS_PREFLIGHT_CONTINUE}
       CORS_OPTIONS_SUCCESS_STATUS: ${CORS_OPTIONS_SUCCESS_STATUS}
       CORS_LOG_VIOLATIONS: ${CORS_LOG_VIOLATIONS}
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get({host:'localhost',port:process.env.API_PORT||3400,path:'/version'},(r)=>process.exit(r.statusCode>=200&&r.statusCode<500?0:1))"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 40s
     networks:
       - asset2go-network
 
@@ -127,11 +133,17 @@ services:
   worker:
     build:
       context: .
-      dockerfile: apps/api/Dockerfile
-      target: production
+      dockerfile: Dockerfile
+      target: api-production
     environment:
       <<: *api_worker_shared_env
       NODE_OPTIONS: ${WORKER_NODE_OPTIONS:-"--max-old-space-size=6144"}
+    healthcheck:
+      test: ["CMD", "pgrep", "-f", "node.*dist/main.*worker"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
     networks:
       - asset2go-network
     command:
@@ -145,8 +157,8 @@ services:
   web:
     build:
       context: .
-      dockerfile: apps/web/Dockerfile
-      target: production
+      dockerfile: Dockerfile
+      target: web-production
       args:
         - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
         - NEXT_PUBLIC_ADDRESS=${NEXT_PUBLIC_ADDRESS}
@@ -171,6 +183,12 @@ services:
 
       # Image Sources
       - IMAGE_SOURCES=${IMAGE_SOURCES}
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get({host:'localhost',port:process.env.PORT||3401,path:'/'},(r)=>process.exit(r.statusCode>=200&&r.statusCode<500?0:1))"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 40s
     networks:
       - asset2go-network
 

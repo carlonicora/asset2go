@@ -938,6 +938,183 @@ Browser → http://localhost:3401 → Web Container → http://localhost:3400 �
 Web Container → http://api:3400 (internal Docker network) → API Container
 ```
 
+## Docker Build Architecture
+
+### Unified Dockerfile Strategy
+
+Asset2Go uses a **unified Dockerfile** ([Dockerfile](Dockerfile)) that builds all services from a single file. This approach provides significant benefits over separate Dockerfiles:
+
+**Benefits:**
+- **Shared Package Built Once**: The `@asset2go/shared` package is built in a single stage and reused by both API and Web services
+- **Faster CI/CD**: When building multiple services, Docker reuses cached layers from the shared build stages
+- **Consistent Dependencies**: All services use the exact same base image and dependency versions
+- **Reduced Maintenance**: Single source of truth for build configuration
+
+**Build Stage Flow:**
+```
+base
+  ↓
+workspace-deps (install all dependencies)
+  ↓
+shared-builder (build @asset2go/shared ONCE)
+  ├→ api-builder → api-production
+  └→ web-builder → web-production
+```
+
+**Previous Problem:**
+Before the unified approach, each Dockerfile independently built the shared package:
+- API Dockerfile: Built shared package
+- Web Dockerfile: Built shared package again (duplicate work!)
+
+As the shared package grows with more utilities, types, and constants, this duplication becomes increasingly wasteful.
+
+**Build Targets:**
+- `api-development`: API with hot-reload for development
+- `api-production`: Optimized API for production
+- `web-development`: Web with hot-reload for development
+- `web-production`: Optimized Web for production
+
+**Build Commands:**
+```bash
+# Build all services (shared package built once, reused)
+docker compose build
+
+# Build specific service (still benefits from shared caching)
+docker compose build api
+docker compose build web
+```
+
+### Shared Package (@asset2go/shared)
+
+The shared package contains common code used by both frontend and backend:
+- TypeScript types and interfaces
+- Enums and constants
+- Utility functions
+- Validation schemas
+
+**Development Mode:**
+- Source files are mounted via volumes ([docker-compose.dev.yml](docker-compose.dev.yml))
+- TypeScript path mapping resolves to source: `./packages/shared/src`
+- Changes to shared package require container restart
+- Hot-reload works for app-specific code (API/Web src directories)
+
+**Production Mode:**
+- Shared package is built during Docker build
+- Compiled output is included in final images
+- No source files in production containers
+
+**Import Strategy:**
+```typescript
+// Both API and Web import from the package
+import { EquipmentStatus } from '@asset2go/shared';
+
+// TypeScript resolves via tsconfig paths during development
+// Runtime uses built package.json main field in production
+```
+
+### .dockerignore Explanation
+
+The [.dockerignore](.dockerignore) file excludes certain directories from the Docker build context:
+
+```dockerignore
+dist/
+**/dist/
+node_modules/
+**/node_modules/
+.next/
+**/.next/
+```
+
+**Why this is correct:**
+- ✅ `dist/` folders are **created during the Docker build**, not copied from host
+- ✅ Multi-stage builds preserve `dist/` between stages (COPY --from=builder)
+- ✅ Excluding these from the initial context reduces build context size
+- ✅ Prevents stale local builds from interfering with container builds
+
+**What gets excluded:**
+- Host `node_modules/` (will be rebuilt inside container)
+- Host `dist/` folders (will be built fresh inside container)
+- Host `.next/` build output (rebuilt during container build)
+
+**What gets preserved:**
+- `dist/` folders created inside Docker during build stages
+- COPY commands between stages work regardless of .dockerignore
+
+### Health Checks
+
+All services have health checks configured to ensure proper orchestration:
+
+**API Service:**
+```yaml
+healthcheck:
+  test: ["CMD", "node", "-e", "require('http').get({host:'localhost',port:process.env.API_PORT||3400,path:'/version'},(r)=>process.exit(r.statusCode>=200&&r.statusCode<500?0:1))"]
+  interval: 10s
+  timeout: 5s
+  retries: 3
+  start_period: 40s
+```
+
+**Web Service:**
+```yaml
+healthcheck:
+  test: ["CMD", "node", "-e", "require('http').get({host:'localhost',port:process.env.PORT||3401,path:'/'},(r)=>process.exit(r.statusCode>=200&&r.statusCode<500?0:1))"]
+  interval: 10s
+  timeout: 5s
+  retries: 3
+  start_period: 40s
+```
+
+**Worker Service:**
+```yaml
+healthcheck:
+  test: ["CMD", "pgrep", "-f", "node.*dist/main.*worker"]
+  interval: 10s
+  timeout: 5s
+  retries: 3
+  start_period: 30s
+```
+
+**Benefits:**
+- Docker knows when services are actually ready (not just running)
+- `docker compose ps` shows health status
+- Orchestration tools (Kubernetes, Coolify) can use health checks for:
+  - Rolling updates
+  - Load balancer registration
+  - Automatic restarts
+  - Readiness probes
+
+**Checking Health:**
+```bash
+# View health status
+docker compose ps
+
+# Should show: (healthy) next to running services
+```
+
+### Runtime Dependencies
+
+**Image Processing Libraries:**
+Both API and Web services include image processing dependencies:
+
+```dockerfile
+RUN apk add --no-cache cairo jpeg pango giflib libwebp
+```
+
+**Why both need them:**
+- **API**: Backend image processing, file uploads, document generation
+- **Web**: Next.js Image Optimization (sharp) for server-side image resizing
+
+**Next.js Image Optimization:**
+Next.js uses `sharp` at runtime for optimizing images during server-side rendering. Without these dependencies, image optimization would fail with:
+```
+Error: Cannot find module 'sharp'
+```
+
+**Size Impact:**
+- Combined size: ~15-20MB per image
+- Required for production functionality
+- Cannot be removed without breaking features
+
 ## Critical Configuration
 
 ### Docker Networking for Next.js SSR

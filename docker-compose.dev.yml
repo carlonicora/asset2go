@@ -1,7 +1,7 @@
 services:
   api:
     build:
-      target: development
+      target: api-development
     environment:
       - NODE_ENV=${NODE_ENV:-development}
     volumes:
@@ -10,7 +10,7 @@ services:
 
   worker:
     build:
-      target: development
+      target: api-development
     environment:
       - NODE_ENV=${NODE_ENV:-development}
     volumes:
@@ -25,7 +25,7 @@ services:
 
   web:
     build:
-      target: development
+      target: web-development
     environment:
       - NODE_ENV=${NODE_ENV:-development}
     volumes:
