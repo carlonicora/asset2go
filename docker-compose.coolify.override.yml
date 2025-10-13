@@ -1,0 +1,19 @@
+services:
+  api:
+    networks:
+      asset2go-network: null
+      coolify: null
+
+  worker:
+    networks:
+      asset2go-network: null
+      coolify: null
+
+  web:
+    networks:
+      asset2go-network: null
+      coolify: null
+
+networks:
+  coolify:
+    external: true

@@ -232,6 +232,20 @@ docker compose up --build --scale worker=3
 - Independent service updates
 - Resource optimization
 
+#### Running on Coolify
+
+When deploying through Coolify, point the runner at the base compose file and provide both build/start commands so the Coolify-specific override is applied:
+
+```bash
+# Custom build command
+docker compose -f docker-compose.yml -f docker-compose.coolify.override.yml build
+
+# Custom start command
+docker compose -f docker-compose.yml -f docker-compose.coolify.override.yml up -d
+```
+
+The override only attaches services to Coolify’s `coolify` network; it is safe to omit it in any other environment.
+
 **Examples:**
 ```bash
 # Server 1: Backend (API + 3 Workers)
@@ -244,7 +258,12 @@ docker compose up web -d
 docker compose up api -d
 ```
 
-> ℹ️ **Coolify deploys:** The compose file expects the external network `coolify` (Traefik proxy) to exist. On Coolify-managed hosts that network is created automatically; if you run elsewhere, create it once with `docker network create coolify`.
+> ℹ️ **Coolify deploys:** Use the companion file `docker-compose.coolify.override.yml` when building and starting containers on Coolify. It simply attaches each service to Coolify’s external `coolify` network:
+> ```bash
+> docker compose -f docker-compose.yml -f docker-compose.coolify.override.yml build
+> docker compose -f docker-compose.yml -f docker-compose.coolify.override.yml up -d
+> ```
+> Locally you can ignore the override; the external network is only required on the Coolify host.
 
 ### 3. Verify
 
@@ -1426,9 +1445,10 @@ docker compose -f docker-compose.yml -f docker-compose.dev.yml up --build
 1. **Run the base compose file only** for production deployments
 2. **Never commit secrets** - use environment variable management tools
 3. **Avoid mounting `node_modules` or `.next`** to prevent dependency drift
-4. **Use specific image tags** instead of `latest`
-5. **Enable health checks** and monitoring
-6. **Rebuild after ANY environment variable change** affecting build
+4. **On Coolify, include the `docker-compose.coolify.override.yml` file** so services join the platform network
+5. **Use specific image tags** instead of `latest`
+6. **Enable health checks** and monitoring
+7. **Rebuild after ANY environment variable change** affecting build
 
 ### Both Modes
 

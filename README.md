@@ -107,6 +107,20 @@ docker compose -f docker-compose.yml -f docker-compose.dev.yml up --build
 
 The dev override switches the images to their `development` targets, mounts the source directories for hot reload, and reconfigures the worker to run the nodemon-based dev command. Always include `--build` when switching between prod and dev modes so Docker rebuilds the correct stage.
 
+**Deploying with Coolify:**
+
+Coolify can use the same base compose file. Configure its build/start commands to include the Coolify override so each service attaches to the platform network:
+
+```bash
+# Custom build command
+docker compose -f docker-compose.yml -f docker-compose.coolify.override.yml build
+
+# Custom start command
+docker compose -f docker-compose.yml -f docker-compose.coolify.override.yml up -d
+```
+
+Locally you can ignore the override; it only adds the external `coolify` network that Coolify provides.
+
 ## 📦 Workspace Packages
 
 ### @asset2go/api
