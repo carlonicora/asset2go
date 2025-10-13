@@ -108,9 +108,8 @@ COPY --from=builder /app/apps/web/.next ./apps/web/.next
 COPY --from=builder /app/apps/web/public ./apps/web/public
 COPY --from=builder /app/apps/web/next.config.js ./apps/web/
 
-# Copy production dependencies from builder
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/apps/web/node_modules ./apps/web/node_modules
+# Install production dependencies (ignore scripts to skip husky)
+RUN pnpm install --frozen-lockfile --prod --ignore-scripts
 
 # Expose port (set via build arg; defaults to 3401 for local compose)
 ARG PORT=3401

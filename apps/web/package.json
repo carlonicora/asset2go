@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "dotenv -e ../../.env -- next build",
-    "dev": "dotenv -e ../../.env -- next dev --turbopack",
+    "build": "dotenv -e ../../.env --ignore-missing -- next build",
+    "dev": "dotenv -e ../../.env --ignore-missing -- next dev --turbopack",
     "lint": "next lint",
-    "start": "dotenv -e ../../.env -- next start -H 0.0.0.0",
+    "start": "dotenv -e ../../.env --ignore-missing -- next start -H 0.0.0.0",
     "test": "jest",
     "test:coverage": "jest --coverage",
     "test:watch": "jest --watchAll --verbose",
