@@ -1,3 +1,9 @@
+## [1.7.8](https://github.com/carlonicora/asset2go/compare/v1.7.7...v1.7.8) (2025-10-13)
+
+### 🐛 Bug Fixes
+
+* remove unused port for worker ([99d349d](https://github.com/carlonicora/asset2go/commit/99d349df78713e8b8863b0777cea422eddaec5d8))
+
 ## [1.7.7](https://github.com/carlonicora/asset2go/compare/v1.7.6...v1.7.7) (2025-10-13)
 
 ### 🐛 Bug Fixes
