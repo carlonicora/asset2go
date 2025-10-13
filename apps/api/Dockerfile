@@ -97,9 +97,6 @@ COPY --from=builder /app/apps/api/templates ./apps/api/templates
 # Install production dependencies only (ignore scripts to skip husky)
 RUN pnpm install --frozen-lockfile --prod --ignore-scripts
 
-# Ensure native addons (sharp) are correctly rebuilt in this stage
-RUN pnpm rebuild sharp
-
 WORKDIR /app/apps/api
 
 # Expose port (set via build arg; defaults to 3400 for local compose)

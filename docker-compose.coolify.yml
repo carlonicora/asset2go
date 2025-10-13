@@ -121,6 +121,7 @@ services:
       - api-app-node-modules:/app/apps/api/node_modules
     networks:
       - asset2go-network
+      - coolify
 
   # ---------------------------------------------------------------------------
   # Worker (Background Job Processing)
@@ -200,6 +201,7 @@ services:
       - worker-app-node-modules:/app/apps/api/node_modules
     networks:
       - asset2go-network
+      - coolify
     # Worker uses same Dockerfile as API but different commands based on DOCKER_BUILD_TARGET
     command: >
       sh -c '
@@ -253,6 +255,7 @@ services:
       # - web-next:/app/apps/web/.next
     networks:
       - asset2go-network
+      - coolify
 
 # =============================================================================
 # PERSISTENT VOLUMES
@@ -280,3 +283,5 @@ volumes:
 networks:
   asset2go-network:
     driver: bridge
+  coolify:
+    external: true

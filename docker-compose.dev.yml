@@ -1,12 +1,16 @@
 services:
   api:
     volumes:
+      - ./apps/api/src:/app/apps/api/src
       - ./packages/shared:/app/packages/shared
 
   worker:
     volumes:
+      - ./apps/api/src:/app/apps/api/src
       - ./packages/shared:/app/packages/shared
 
   web:
     volumes:
+      - ./apps/web/src:/app/apps/web/src
+      - ./apps/web/public:/app/apps/web/public
       - ./packages/shared:/app/packages/shared
