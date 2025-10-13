@@ -1,15 +1,33 @@
 services:
   api:
+    build:
+      target: development
+    environment:
+      - NODE_ENV=${NODE_ENV:-development}
     volumes:
       - ./apps/api/src:/app/apps/api/src
       - ./packages/shared:/app/packages/shared
 
   worker:
+    build:
+      target: development
+    environment:
+      - NODE_ENV=${NODE_ENV:-development}
     volumes:
       - ./apps/api/src:/app/apps/api/src
       - ./packages/shared:/app/packages/shared
+    command:
+      - pnpm
+      - --filter
+      - asset2go-api
+      - run
+      - start:worker:dev
 
   web:
+    build:
+      target: development
+    environment:
+      - NODE_ENV=${NODE_ENV:-development}
     volumes:
       - ./apps/web/src:/app/apps/web/src
       - ./apps/web/public:/app/apps/web/public

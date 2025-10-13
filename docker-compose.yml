@@ -23,7 +23,7 @@ services:
     build:
       context: .
       dockerfile: apps/api/Dockerfile
-      target: ${DOCKER_BUILD_TARGET:-development}
+      target: production
       args:
         - API_PORT=${API_PORT:-3400}
     container_name: asset2go-api
@@ -31,8 +31,7 @@ services:
       - "${API_PORT:-3400}:${API_PORT:-3400}"
     environment:
       # Build & Application Mode
-      - DOCKER_BUILD_TARGET=${DOCKER_BUILD_TARGET:-development}
-      - NODE_ENV=${NODE_ENV:-development}
+      - NODE_ENV=${NODE_ENV:-production}
       - PORT=${API_PORT:-3400}
       - API_URL=${API_URL}
       - API_PORT=${API_PORT:-3400}
@@ -115,10 +114,6 @@ services:
       # UPC Database
       - UPC_ENABLED=${UPC_ENABLED}
       - UPC_API_KEY=${UPC_API_KEY}
-    volumes:
-      # - ./.env:/app/.env:ro
-      - api-node-modules:/app/node_modules
-      - api-app-node-modules:/app/apps/api/node_modules
     networks:
       - asset2go-network
 
@@ -129,12 +124,11 @@ services:
     build:
       context: .
       dockerfile: apps/api/Dockerfile
-      target: ${DOCKER_BUILD_TARGET:-development}
+      target: production
     container_name: asset2go-worker
     environment:
       # Build & Application Mode
-      - DOCKER_BUILD_TARGET=${DOCKER_BUILD_TARGET:-development}
-      - NODE_ENV=${NODE_ENV:-development}
+      - NODE_ENV=${NODE_ENV:-production}
 
       # Database - Use .env values (external services)
       - NEO4J_URI=${NEO4J_URI}
@@ -192,21 +186,13 @@ services:
       # UPC Database
       - UPC_ENABLED=${UPC_ENABLED}
       - UPC_API_KEY=${UPC_API_KEY}
-    volumes:
-      # - ./.env:/app/.env:ro
-      - worker-node-modules:/app/node_modules
-      - worker-app-node-modules:/app/apps/api/node_modules
     networks:
       - asset2go-network
-    # Worker uses same Dockerfile as API but different commands based on DOCKER_BUILD_TARGET
-    command: >
-      sh -c '
-      if [ "$${DOCKER_BUILD_TARGET:-development}" = "production" ]; then
-        cd /app/apps/api && node --max-old-space-size=6144 dist/main --mode=worker;
-      else
-        pnpm --filter asset2go-api run start:worker:dev;
-      fi
-      '
+    command:
+      - node
+      - --max-old-space-size=6144
+      - dist/main
+      - --mode=worker
 
   # ---------------------------------------------------------------------------
   # Web Application (Next.js Frontend)
@@ -215,7 +201,7 @@ services:
     build:
       context: .
       dockerfile: apps/web/Dockerfile
-      target: ${DOCKER_BUILD_TARGET:-development}
+      target: production
       args:
         - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
         - NEXT_PUBLIC_ADDRESS=${NEXT_PUBLIC_ADDRESS}
@@ -226,8 +212,7 @@ services:
       - "${PORT:-3401}:${PORT:-3401}"
     environment:
       # Build & Application Configuration
-      - DOCKER_BUILD_TARGET=${DOCKER_BUILD_TARGET:-development}
-      - NODE_ENV=${NODE_ENV:-development}
+      - NODE_ENV=${NODE_ENV:-production}
       - PORT=${PORT:-3401}
       - APP_URL=${APP_URL}
 
@@ -241,36 +226,8 @@ services:
 
       # Image Sources
       - IMAGE_SOURCES=${IMAGE_SOURCES}
-    volumes:
-      # - ./.env:/app/.env:ro
-      # Named volumes for node_modules (both dev and prod need these)
-      - web-node-modules:/app/node_modules
-      - web-app-node-modules:/app/apps/web/node_modules
-      # .next volume ONLY for development (production builds .next into image)
-      # Uncomment ONLY when DOCKER_BUILD_TARGET=development
-      # - web-next:/app/apps/web/.next
     networks:
       - asset2go-network
-
-# =============================================================================
-# PERSISTENT VOLUMES
-# =============================================================================
-volumes:
-  # Application (prevent node_modules conflicts)
-  api-node-modules:
-    driver: local
-  api-app-node-modules:
-    driver: local
-  worker-node-modules:
-    driver: local
-  worker-app-node-modules:
-    driver: local
-  web-node-modules:
-    driver: local
-  web-app-node-modules:
-    driver: local
-  web-next:
-    driver: local
 
 # =============================================================================
 # NETWORKS
