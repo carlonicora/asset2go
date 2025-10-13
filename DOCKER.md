@@ -140,9 +140,8 @@ This shared infrastructure must be:
 Create/edit your `.env` file in the project root with these **REQUIRED** variables:
 
 ```bash
-# Build Configuration (REQUIRED)
-DOCKER_BUILD_TARGET=development  # 'development' or 'production'
-NODE_ENV=development             # 'development' or 'production'
+# Runtime Mode (REQUIRED)
+NODE_ENV=development             # Override per service if needed
 
 # API Configuration (REQUIRED)
 API_PORT=3400
@@ -190,14 +189,14 @@ NEXT_PUBLIC_VAPID_PUBLIC_KEY=your-public-key
 Run all three services together on a single machine:
 
 ```bash
-# Build base images (no source mounts required)
-docker compose build
+# Build dev-stage images (ensures development targets)
+docker compose -f docker-compose.yml -f docker-compose.dev.yml build --pull
 
 # Start all services with development overrides (adds source + shared mounts)
-docker compose -f docker-compose.yml -f docker-compose.dev.yml up
+docker compose -f docker-compose.yml -f docker-compose.dev.yml up --build
 
 # Or start in background
-docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d
+docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d --build
 ```
 
 **Use this when:**
@@ -212,19 +211,19 @@ Run specific services for horizontal scaling and distributed deployment. Use onl
 
 ```bash
 # API only
-docker compose up api
+docker compose up --build api
 
 # Worker only
-docker compose up worker
+docker compose up --build worker
 
 # Web only
-docker compose up web
+docker compose up --build web
 
 # API + Worker (common for backend server)
-docker compose up api worker
+docker compose up --build api worker
 
 # Multiple instances (scale workers)
-docker compose up --scale worker=3
+docker compose up --build --scale worker=3
 ```
 
 **Use this when:**
@@ -259,12 +258,8 @@ Development mode enables hot-reload for rapid development with live code changes
 
 ### Configuration
 
-In your `.env`:
-
-```bash
-DOCKER_BUILD_TARGET=development
-NODE_ENV=development
-```
+Set development-friendly values in your `.env` as needed (for example `NODE_ENV=development`, pointing to local infrastructure). No special build flags are required; the override switches the Docker build target automatically.
+Always include the dev override file when bringing the stack up so the containers are rebuilt from the `development` stages.
 
 ### Features
 
@@ -294,10 +289,10 @@ These mounts are defined in `docker-compose.dev.yml`:
 
 ```bash
 # Build development images
-docker compose build
+docker compose -f docker-compose.yml -f docker-compose.dev.yml build --pull
 
 # Start in development mode (adds dev overrides)
-docker compose -f docker-compose.yml -f docker-compose.dev.yml up
+docker compose -f docker-compose.yml -f docker-compose.dev.yml up --build
 
 # View logs
 docker compose -f docker-compose.yml -f docker-compose.dev.yml logs -f web
@@ -315,22 +310,17 @@ When running in development mode:
 - ⚠️ Changes to `package.json`, `Dockerfile`, or dependencies require rebuild:
   ```bash
   docker compose -f docker-compose.yml -f docker-compose.dev.yml down
-  docker compose build
-  docker compose -f docker-compose.yml -f docker-compose.dev.yml up
+  docker compose -f docker-compose.yml -f docker-compose.dev.yml build --no-cache
+  docker compose -f docker-compose.yml -f docker-compose.dev.yml up --build
   ```
 
 ## Production Mode
 
-Production mode creates optimized builds with minimal runtime footprint.
+Production mode creates optimized builds with minimal runtime footprint. The base compose file is now production-oriented by default (no override required).
 
 ### Configuration
 
-In your `.env`:
-
-```bash
-DOCKER_BUILD_TARGET=production
-NODE_ENV=production
-```
+Populate production-ready values in `.env` (for example `NODE_ENV=production`, live infrastructure URLs, etc.).
 
 ### Features
 
@@ -352,10 +342,10 @@ The production build:
 
 ```bash
 # Build production images (base compose only)
-docker compose build
+docker compose build --pull
 
 # Start in production mode (do NOT include docker-compose.dev.yml)
-docker compose up -d
+docker compose up --build -d
 
 # Check status
 docker compose ps
@@ -369,9 +359,7 @@ docker compose down
 
 ### Important Notes
 
-⚠️ **Volume Mounts**: The `.next` volume mount MUST remain commented out in production mode, otherwise it will overwrite the built files with an empty directory.
-
-⚠️ **Shared Package**: Do not mount `./packages/shared` in production. The base compose file keeps the compiled output baked into the image so `@asset2go/shared` resolves correctly at runtime.
+⚠️ **Volume Mounts**: No `node_modules` or `.next` volumes are mounted in production; everything ships inside the image to avoid dependency drift.
 
 ⚠️ **Environment Variables**: Next.js requires build-time environment variables. If you change `NEXT_PUBLIC_*` variables, you must rebuild:
 ```bash
@@ -759,7 +747,6 @@ docker compose up web -d
 ```bash
 # Server 1: backend.example.com
 # .env configuration
-DOCKER_BUILD_TARGET=production
 NODE_ENV=production
 
 # Point to actual infrastructure
@@ -771,8 +758,8 @@ S3_ENDPOINT=https://s3.amazonaws.com
 API_PORT=3400
 API_URL=https://api.example.com/
 
-# Start backend services
-docker compose up api --scale worker=3 -d
+# Start backend services (production stages baked into image)
+docker compose up --build api --scale worker=3 -d
 ```
 
 #### Frontend Server (Web Only)
@@ -780,7 +767,6 @@ docker compose up api --scale worker=3 -d
 ```bash
 # Server 2: web.example.com
 # .env configuration
-DOCKER_BUILD_TARGET=production
 NODE_ENV=production
 
 # Point to backend API
@@ -798,7 +784,7 @@ APP_URL=https://app.example.com/
 NEXT_PUBLIC_ADDRESS=https://app.example.com
 
 # Start web service
-docker compose up web -d
+docker compose up --build web -d
 ```
 
 #### Load Balancer Configuration
@@ -1000,46 +986,30 @@ docker compose exec web wget -O- --timeout=5 $API_INTERNAL_URL
 
 ### Build Targets
 
-The `DOCKER_BUILD_TARGET` variable controls which Dockerfile stage is built:
+The compose workflow now selects build targets automatically:
 
-**Development Target (`DOCKER_BUILD_TARGET=development`):**
-- Uses the `development` stage in Dockerfile
-- Runs development server with hot-reload
-- Includes all devDependencies
-- Mounts source code as volumes
+- **Base file (`docker-compose.yml`)** builds the `production` stage of each Dockerfile. Dependencies are baked into the image and the containers run the compiled output (`node dist/...`, `pnpm ... start`).
+- **Development override (`docker-compose.dev.yml`)** switches all services to the `development` stage when layered with the base file. The images include dev dependencies and expose hot-reload commands (`pnpm ... dev`, `nodemon`).
 
-**Production Target (`DOCKER_BUILD_TARGET=production`):**
-- Uses `builder` and `production` stages in Dockerfile
-- Creates optimized production build
-- Only includes production dependencies
-- No source code volumes (uses built files from image)
+Switch between modes by including or omitting the dev override file, and always rebuild (`--build`) when you change modes so Docker picks the correct stage.
 
 ### Volume Mounting Strategy
 
-**For Development:**
+**For Development (compose + dev override):**
 ```yaml
 volumes:
   - ./apps/web/src:/app/apps/web/src      # ✅ Hot reload
   - ./apps/web/public:/app/apps/web/public
   - ./packages/shared:/app/packages/shared
-  - web-node-modules:/app/node_modules     # ✅ Preserve deps
-  # .next volume is COMMENTED OUT - OK for dev (rebuilt on change)
 ```
 
-**For Production:**
+**For Production (base compose only):**
 ```yaml
 volumes:
-  - ./apps/web/src:/app/apps/web/src      # ✅ Still mounted (ignored by production build)
-  - ./apps/web/public:/app/apps/web/public
-  - ./packages/shared:/app/packages/shared
-  - web-node-modules:/app/node_modules     # ✅ Needed for node_modules
-  # .next volume MUST BE COMMENTED OUT - Critical for production!
+  # No application volumes mounted – everything runs from the image
 ```
 
-⚠️ **Critical:** The `.next` directory volume mount MUST remain commented out. If uncommented in production mode, it creates an empty volume that overwrites the built `.next` directory, causing the error:
-```
-Could not find a production build in the '.next' directory
-```
+⚠️ **Critical:** Avoid mounting `node_modules` or `.next` in either mode. The base image now carries the full dependency tree; mounting volumes would mask the image contents and lead to stale or empty directories.
 
 ## Environment Variables
 
@@ -1049,10 +1019,9 @@ All variables with their REQUIRED/OPTIONAL status:
 
 ```bash
 # =============================================================================
-# BUILD CONFIGURATION (REQUIRED)
+# RUNTIME CONFIGURATION (REQUIRED)
 # =============================================================================
-DOCKER_BUILD_TARGET=development  # REQUIRED: 'development' or 'production'
-NODE_ENV=development             # REQUIRED: 'development' or 'production'
+NODE_ENV=development             # Set to match the environment (development/production)
 
 # =============================================================================
 # API CONFIGURATION (REQUIRED)
@@ -1236,17 +1205,17 @@ docker compose up
 **Cause:** Running production build or volumes not mounted
 
 **Solution:**
-1. Verify development mode:
+1. Make sure you are using the dev override:
    ```bash
-   grep DOCKER_BUILD_TARGET .env
-   # Should show: DOCKER_BUILD_TARGET=development
+   docker compose -f docker-compose.yml -f docker-compose.dev.yml ps
    ```
+   If this command fails, you likely started only the base compose (production mode).
 
-2. Rebuild with development target:
+2. Rebuild the dev images:
    ```bash
-   docker compose down
-   docker compose build
-   docker compose up
+   docker compose -f docker-compose.yml -f docker-compose.dev.yml down
+   docker compose -f docker-compose.yml -f docker-compose.dev.yml build --no-cache
+   docker compose -f docker-compose.yml -f docker-compose.dev.yml up --build
    ```
 
 3. Check volumes are mounted:
@@ -1428,39 +1397,35 @@ docker system df
 
 ## Switching Between Dev and Production
 
-To switch modes, update `.env` and rebuild:
+The base compose file is production-oriented; add the dev override when you need hot reload.
 
 ```bash
-# Switch to Development
-# Edit .env: DOCKER_BUILD_TARGET=development
+# Production (default)
 docker compose down
-docker compose build
-docker compose up
+docker compose up --build -d
 
-# Switch to Production
-# Edit .env: DOCKER_BUILD_TARGET=production
+# Development (hot reload)
 docker compose down
-docker compose build
-docker compose up
+docker compose -f docker-compose.yml -f docker-compose.dev.yml up --build
 ```
 
-**Note:** Always rebuild when changing `DOCKER_BUILD_TARGET` as it uses different Dockerfile stages.
+**Note:** Always include `--build` when switching modes so Docker rebuilds the correct stage.
 
 ## Best Practices
 
 ### Development
 
-1. **Use development mode** (`DOCKER_BUILD_TARGET=development`) for active development
-2. **Keep volumes mounted** for hot-reload (default configuration)
+1. **Use the dev override** (`-f docker-compose.yml -f docker-compose.dev.yml`) for active development
+2. **Keep source/shared volumes mounted** for hot-reload (default configuration)
 3. **Don't commit `.env`** - use `.env.example` as template
 4. **Check logs regularly** when something doesn't work
 5. **Rebuild after dependency changes** (package.json modifications)
 
 ### Production
 
-1. **Always use production mode** (`DOCKER_BUILD_TARGET=production`)
+1. **Run the base compose file only** for production deployments
 2. **Never commit secrets** - use environment variable management tools
-3. **Keep `.next` volume commented out** in docker-compose.yml
+3. **Avoid mounting `node_modules` or `.next`** to prevent dependency drift
 4. **Use specific image tags** instead of `latest`
 5. **Enable health checks** and monitoring
 6. **Rebuild after ANY environment variable change** affecting build

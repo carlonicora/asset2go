@@ -87,17 +87,25 @@ pnpm dev:worker   # Start only worker process
 
 ### Using Docker
 
-**Start the entire stack with Docker:**
+**Production-like stack (default compose):**
 
 ```bash
-docker-compose up
+docker compose up --build
 ```
 
-This will start:
+The default compose file now builds the `production` stages of every service so each container runs with the dependencies baked into its image. The stack exposes:
 
-- API server (http://localhost:3000)
-- Worker process
-- Web application (http://localhost:3191)
+- API server on http://localhost:3400
+- Background worker sharing the API image
+- Web application on http://localhost:3401
+
+**Development stack inside Docker:**
+
+```bash
+docker compose -f docker-compose.yml -f docker-compose.dev.yml up --build
+```
+
+The dev override switches the images to their `development` targets, mounts the source directories for hot reload, and reconfigures the worker to run the nodemon-based dev command. Always include `--build` when switching between prod and dev modes so Docker rebuilds the correct stage.
 
 ## 📦 Workspace Packages
 
@@ -197,18 +205,18 @@ pnpm start:prod
 Build production images:
 
 ```bash
-# Build API image
-docker build -f apps/api/Dockerfile -t asset2go-api .
+# Build API image (production stage)
+docker build -f apps/api/Dockerfile --target production -t asset2go-api .
 
-# Build Web image
-docker build -f apps/web/Dockerfile -t asset2go-web .
+# Build Web image (production stage)
+docker build -f apps/web/Dockerfile --target production -t asset2go-web .
 ```
 
 Run production containers:
 
 ```bash
-docker run -p 3000:3000 asset2go-api
-docker run -p 3191:3191 asset2go-web
+docker run -p 3400:3400 asset2go-api
+docker run -p 3401:3401 asset2go-web
 ```
 
 ## 🧪 Testing
