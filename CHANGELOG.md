@@ -1,3 +1,9 @@
+## [1.7.7](https://github.com/carlonicora/asset2go/compare/v1.7.6...v1.7.7) (2025-10-13)
+
+### 🐛 Bug Fixes
+
+* fix docker-compose for coolify ([5ec3939](https://github.com/carlonicora/asset2go/commit/5ec3939e7eeb518dfc23493a61ae9dd269f4275f))
+
 ## [1.7.6](https://github.com/carlonicora/asset2go/compare/v1.7.5...v1.7.6) (2025-10-12)
 
 ### 🐛 Bug Fixes
