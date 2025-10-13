@@ -246,6 +246,8 @@ docker compose -f docker-compose.yml -f docker-compose.coolify.override.yml up -
 
 The override only attaches services to Coolify’s `coolify` network; it is safe to omit it in any other environment.
 
+> ℹ️ **Provision the network once**: Coolify expects an external Docker network named `coolify`. Create it on the host with `docker network create coolify` before the first deployment (the command is idempotent and safe to rerun).
+
 **Examples:**
 ```bash
 # Server 1: Backend (API + 3 Workers)
@@ -1047,6 +1049,7 @@ NODE_ENV=development             # Set to match the environment (development/pro
 # =============================================================================
 API_PORT=3400                    # REQUIRED: Port for API server
 API_URL=http://localhost:3400/   # REQUIRED: External API URL
+API_NODE_OPTIONS=--max-old-space-size=6144     # OPTIONAL: Extra Node.js flags for the API container
 
 # =============================================================================
 # WEB CONFIGURATION (REQUIRED)
@@ -1055,6 +1058,12 @@ PORT=3401                                   # REQUIRED: Port for web server
 APP_URL=http://localhost:3401/              # REQUIRED: External web URL
 NEXT_PUBLIC_API_URL=http://localhost:3400/  # REQUIRED: API URL for browser
 NEXT_PUBLIC_ADDRESS=http://localhost:3401   # REQUIRED: Web address for browser
+WEB_NODE_OPTIONS=--max-old-space-size=4096  # OPTIONAL: Extra Node.js flags for the web container
+
+# =============================================================================
+# WORKER CONFIGURATION (OPTIONAL)
+# =============================================================================
+WORKER_NODE_OPTIONS=--max-old-space-size=6144 # OPTIONAL: Extra Node.js flags for worker containers
 
 # =============================================================================
 # DOCKER INTERNAL NETWORKING (CRITICAL FOR MULTI-SERVER)

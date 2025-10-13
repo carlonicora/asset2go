@@ -21,24 +21,23 @@ RUN apk add --no-cache python3 py3-pip make g++ cairo-dev jpeg-dev pango-dev gif
 WORKDIR /app
 
 # =============================================================================
-# DEVELOPMENT TARGET
+# WORKSPACE DEPENDENCIES (shared by all targets)
 # =============================================================================
-FROM base AS development
+FROM base AS workspace-deps
 
-# Copy workspace configuration files (context is root)
+# Copy workspace manifests (minimal set for faster caching)
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY tsconfig.base.json tsconfig.json ./
-COPY packages/shared/package.json ./packages/shared/
+COPY packages/shared ./packages/shared/
+COPY apps/api ./apps/api/
 
-# Copy API package.json
-COPY apps/api/package.json ./apps/api/
-
-# Install ALL dependencies (including devDependencies)
+# Install all dependencies once (including dev deps for build targets)
 RUN pnpm install --frozen-lockfile
 
-# Copy source files
-COPY apps/api ./apps/api/
-COPY packages/shared ./packages/shared/
+# =============================================================================
+# DEVELOPMENT TARGET
+# =============================================================================
+FROM workspace-deps AS development
 
 # Expose port (set via build arg; defaults to 3400 for local compose)
 ARG API_PORT=3400
@@ -48,30 +47,20 @@ EXPOSE ${API_PORT}
 CMD ["pnpm", "--filter", "asset2go-api", "run", "dev"]
 
 # =============================================================================
-# BUILDER TARGET (for production)
+# SHARED PACKAGE BUILD
 # =============================================================================
-FROM base AS builder
+FROM workspace-deps AS shared-builder
 
-# Copy workspace files
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
-COPY tsconfig.base.json tsconfig.json ./
-COPY packages/shared/package.json ./packages/shared/
-COPY apps/api/package.json ./apps/api/
-
-# Install dependencies
-RUN pnpm install --frozen-lockfile
-
-# Copy source files
-COPY packages/shared ./packages/shared
-COPY apps/api ./apps/api
-
-# Build shared package
 WORKDIR /app/packages/shared
 RUN pnpm build
 
-# Build API
-WORKDIR /app/apps/api
-RUN pnpm build
+# =============================================================================
+# API BUILDER (production)
+# =============================================================================
+FROM shared-builder AS builder
+
+WORKDIR /app
+RUN pnpm --filter asset2go-api build
 
 # =============================================================================
 # PRODUCTION TARGET
@@ -81,20 +70,16 @@ FROM node:22-alpine AS production
 # Install runtime dependencies only (no build tools)
 RUN apk add --no-cache cairo jpeg pango giflib libwebp
 
-# Install pnpm
 RUN corepack enable && corepack prepare pnpm@10.18.2 --activate
 
 WORKDIR /app
+ENV NODE_ENV=production
 
-# Copy built files and dependencies
+# Copy built files
 COPY --from=builder /app/package.json /app/pnpm-lock.yaml /app/pnpm-workspace.yaml ./
-COPY --from=builder /app/packages/shared/package.json ./packages/shared/
-COPY --from=builder /app/packages/shared/dist ./packages/shared/dist
-COPY --from=builder /app/apps/api/package.json ./apps/api/
-COPY --from=builder /app/apps/api/dist ./apps/api/dist
-COPY --from=builder /app/apps/api/templates ./apps/api/templates
+COPY --from=builder /app/packages/shared ./packages/shared
+COPY --from=builder /app/apps/api ./apps/api
 
-# Install production dependencies only (ignore scripts to skip husky)
 RUN pnpm install --frozen-lockfile --prod --ignore-scripts
 
 WORKDIR /app/apps/api
@@ -104,4 +89,4 @@ ARG API_PORT=3400
 EXPOSE ${API_PORT}
 
 # Production command (can be overridden for worker mode)
-CMD ["node", "--max-old-space-size=6144", "dist/main", "--mode=api"]
+CMD ["node", "dist/main", "--mode=api"]
