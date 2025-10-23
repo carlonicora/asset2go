@@ -51,7 +51,7 @@ function CompanyEditorInternal({ company, propagateChanges }: CompanyEditorProps
   const generateUrl = usePageUrlGenerator();
 
   const formSchema = z.object({
-    id: z.string().uuid(),
+    id: z.uuidv4(),
     name: z.string().min(1, {
       message: t(`foundations.company.fields.name.error`),
     }),
@@ -113,23 +113,18 @@ function CompanyEditorInternal({ company, propagateChanges }: CompanyEditorProps
   };
 
   useEffect(() => {
-    async function fetchFeatures() {
+    const fetchFeatures = async () => {
       const allfeatures = await FeatureService.findMany({});
       if (hasRole(AuthRole.Administrator)) {
-        setFeatures(allfeatures);
+        setFeatures(allfeatures.filter((feature) => feature.modules && feature.modules.length > 0));
       } else {
-        setFeatures(allfeatures.filter((feature) => feature.isProduction));
+        setFeatures(
+          allfeatures.filter((feature) => feature.isProduction && feature.modules && feature.modules.length > 0),
+        );
       }
-    }
-    if (
-      open &&
-      features.length === 0 &&
-      (hasRole(AuthRole.Administrator) ||
-        (hasRole(AuthRole.CompanyAdministrator) &&
-          process.env.NEXT_PUBLIC_PRIVATE_INSTALLATION?.toLowerCase() === "true"))
-    )
-      fetchFeatures();
-  }, [open, features]);
+    };
+    if (open && (hasRole(AuthRole.Administrator) || hasRole(AuthRole.CompanyAdministrator))) fetchFeatures();
+  }, [open]);
 
   useEffect(() => {
     if (file && company) {
@@ -170,28 +165,23 @@ function CompanyEditorInternal({ company, propagateChanges }: CompanyEditorProps
   } satisfies DropzoneOptions;
 
   const canAccessFeatures =
-    hasRole(AuthRole.Administrator) ||
-    (hasRole(AuthRole.CompanyAdministrator) && process.env.NEXT_PUBLIC_PRIVATE_INSTALLATION?.toLowerCase() === "true");
-
-  const isAdministrator = hasRole(AuthRole.Administrator);
+    (hasRole(AuthRole.Administrator) || hasRole(AuthRole.CompanyAdministrator)) && features.length > 0;
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <CommonEditorTrigger isEdit={!!company} />
       <DialogContent
-        className={`flex max-h-[70vh] ${isAdministrator || canAccessFeatures ? `max-w-[90vw]` : `max-w-3xl`} flex-col overflow-y-auto`}
+        className={`flex max-h-[70vh] ${canAccessFeatures ? `max-w-[90vw]` : `max-w-3xl`} flex-col overflow-y-auto`}
       >
         <CommonEditorHeader type={t(`types.companies`, { count: 1 })} name={company?.name} />
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className={`flex w-full flex-col gap-y-4`}>
             <div className={`flex flex-row gap-x-4`}>
-              <div
-                className={`flex ${isAdministrator || canAccessFeatures ? `w-1/2` : `w-full`} flex-col justify-start gap-y-4`}
-              >
+              <div className={`flex ${canAccessFeatures ? `w-1/2` : `w-full`} flex-col justify-start gap-y-4`}>
                 <FileUploader value={files} onValueChange={setFiles} dropzoneOptions={dropzone} className="w-full p-4">
                   <FileInput className="text-neutral-300 outline-dashed">
-                    <div className="flex w-full flex-col items-center justify-center pt-3 pb-4">
-                      <div className="flex w-full flex-col items-center justify-center pt-3 pb-4">
+                    <div className="flex w-full flex-col items-center justify-center pb-4 pt-3">
+                      <div className="flex w-full flex-col items-center justify-center pb-4 pt-3">
                         {file || company?.logo ? (
                           <Image
                             src={file ? URL.createObjectURL(file) : company?.logo || ""}
@@ -219,7 +209,7 @@ function CompanyEditorInternal({ company, propagateChanges }: CompanyEditorProps
                 />
               </div>
               {canAccessFeatures && (
-                <div className={`flex w-1/2 min-w-1/2 flex-col justify-start gap-y-4`}>
+                <div className={`min-w-1/2 flex w-1/2 flex-col justify-start gap-y-4`}>
                   <ScrollArea className="h-max">
                     <FormFeatures
                       form={form}
