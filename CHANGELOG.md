@@ -1,3 +1,11 @@
+## [1.8.1](https://github.com/carlonicora/asset2go/compare/v1.8.0...v1.8.1) (2025-10-23)
+
+### 🐛 Bug Fixes
+
+* correct default admin UUID ([affe88c](https://github.com/carlonicora/asset2go/commit/affe88cbfeea0ebb8c96a7f84c6287a0e6c63455))
+* correct imports ([d6578aa](https://github.com/carlonicora/asset2go/commit/d6578aa325e4d41e496fc5e53c70cedad0a7f908))
+* correct user display in list ([f80971e](https://github.com/carlonicora/asset2go/commit/f80971eddd6ef34ca946984cda7354d2f47c3651))
+
 ## [1.8.0](https://github.com/carlonicora/asset2go/compare/v1.7.9...v1.8.0) (2025-10-23)
 
 ### 🚀 Features
