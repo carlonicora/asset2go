@@ -301,7 +301,9 @@
     },
     "user": {
       "errors": {
-        "email_exists": "A user with this email already exists in the system."
+        "email_exists": "A user with this email already exists in the system.",
+        "deleted": "User is deactivated",
+        "inactive": "User is not active"
       },
       "buttons": {
         "add": "Add User",
@@ -387,7 +389,8 @@
       "edit": "Edit",
       "load_more": "Load More",
       "remove": "Remove",
-      "select_all": "Select All"
+      "select_all": "Select All",
+      "is_deleting": "Deleting..."
     },
     "date": {
       "create": "Creation",

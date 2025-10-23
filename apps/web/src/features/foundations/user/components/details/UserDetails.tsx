@@ -1,34 +1,33 @@
 "use client";
 
 import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import AttributeElement from "@/features/common/components/lists/AttributeElement";
 import { RoleInterface } from "@/features/foundations/role/data/RoleInterface";
-import { useUserContext } from "@/features/foundations/user/contexts/UserContext";
 import { usePageUrlGenerator } from "@/hooks/usePageUrlGenerator";
 
 import { Link } from "@/components/custom-ui/link";
+import ContentTitle from "@/features/common/components/navigations/ContentTitle";
+import { useSharedContext } from "@/features/common/contexts/SharedContext";
+import { UserInterface } from "@/features/foundations/user/data/UserInterface";
 import { Modules } from "@/modules/modules";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { ReactElement } from "react";
 
 type UserDetailsProps = {
-  small?: boolean;
+  user: UserInterface;
 };
 
-export default function UserDetails({ small }: UserDetailsProps) {
-  const { user } = useUserContext();
-  if (!user) return null;
-
+export default function UserDetails({ user }: UserDetailsProps) {
   const generateUrl = usePageUrlGenerator();
   const t = useTranslations();
+  const { title } = useSharedContext();
 
   let roles: ReactElement<any> = <></>;
 
   if (user.roles && user.roles.length > 0) {
     roles = (
-      <div className="w-full">
+      <div className="mb-4 w-full">
         <div className="flex flex-wrap gap-2">
           {user.roles.map((role: RoleInterface, index: number) => (
             <Link key={role.id} href={generateUrl({ page: Modules.Role, id: role.id })}>
@@ -42,41 +41,40 @@ export default function UserDetails({ small }: UserDetailsProps) {
     );
   }
 
-  const contentResponse = (
-    <div className="flex w-full flex-row items-start justify-between gap-x-4">
-      <div className="flex w-full flex-col gap-y-0">
-        {small && <h2 className="text-2xl font-semibold">{user.name}</h2>}
-        <AttributeElement inline={true} title={t(`foundations.user.fields.title.label`)} value={user.title} />
-        <AttributeElement inline={true} title={t(`foundations.user.fields.email.label`)} value={user.email} />
-        {user.phone && (
-          <AttributeElement inline={true} title={t(`foundations.user.fields.phone.label`)} value={user.phone} />
-        )}
-        <AttributeElement inline={false} title={t(`foundations.user.fields.bio.label`)} value={user.bio} />
-      </div>
-    </div>
-  );
-
   return (
-    <div className="flex w-full flex-row items-start gap-x-4">
+    <div className="flex w-full flex-col gap-y-2">
       {user.avatar && (
-        <div className="flex flex-col">
-          <Card className={`${small ? `w-60` : `w-96`} flex-shrink-0 self-start`}>
-            <CardHeader className="p-0">
-              <div className="relative aspect-square w-full">
-                <Image src={user.avatar} alt={user.name} fill className="rounded-lg object-cover" />
-              </div>
-            </CardHeader>
-          </Card>
-          {small && <>{roles && <AttributeElement inline={false} value={roles} />}</>}
+        <div className="relative aspect-auto w-full max-w-md overflow-hidden rounded-lg">
+          <Image
+            src={user.avatar}
+            alt={user.name}
+            width={800}
+            height={600}
+            className="h-auto w-full rounded-lg object-contain"
+          />
         </div>
       )}
-      {small ? (
-        contentResponse
+      <ContentTitle type={title.type} element={title.element} functions={title.functions} />
+      {user.isDeleted ? (
+        <div>
+          <Badge variant="destructive">{t(`foundations.user.errors.deleted`)}</Badge>
+        </div>
       ) : (
-        <Card className="flex-1">
-          <CardContent className="p-4">{contentResponse}</CardContent>
-        </Card>
+        <>
+          {!user.isActivated && (
+            <div>
+              <Badge variant="destructive">{t(`foundations.user.errors.inactive`)}</Badge>
+            </div>
+          )}
+        </>
       )}
+      {roles}
+      <AttributeElement inline={true} title={t(`foundations.user.fields.title.label`)} value={user.title} />
+      <AttributeElement inline={true} title={t(`foundations.user.fields.email.label`)} value={user.email} />
+      {user.phone && (
+        <AttributeElement inline={true} title={t(`foundations.user.fields.phone.label`)} value={user.phone} />
+      )}
+      <AttributeElement inline={false} title={t(`foundations.user.fields.bio.label`)} value={user.bio} />
     </div>
   );
 }

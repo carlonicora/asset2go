@@ -9,13 +9,14 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { errorToast } from "@/features/common/components/errors/errorToast";
 import { UserInterface } from "@/features/foundations/user/data/UserInterface";
 import { UserService } from "@/features/foundations/user/data/UserService";
 import { Modules } from "@/modules/modules";
 import { Action } from "@/permisions/types";
 import withPermissions from "@/permisions/wrappers/withPermissions";
-import { UserCheckIcon } from "lucide-react";
+import { MailIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -43,12 +44,16 @@ function UserResentInvitationEmailInternal({ user }: UserResentInvitationEmailPr
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        <Button size="sm">
-          <UserCheckIcon className="mr-3 h-3.5 w-3.5" />
-          {t(`foundations.user.buttons.resend_activation`)}
-        </Button>
-      </DialogTrigger>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <DialogTrigger asChild>
+            <Button size="sm" variant={`ghost`} className="text-muted-foreground">
+              <MailIcon />
+            </Button>
+          </DialogTrigger>
+        </TooltipTrigger>
+        <TooltipContent>{t(`foundations.user.buttons.resend_activation`)}</TooltipContent>
+      </Tooltip>
       <DialogContent className={`flex max-h-[70vh] max-w-3xl flex-col overflow-y-auto`}>
         <DialogHeader>
           <DialogTitle>{t(`foundations.user.resend_activation.title`)}</DialogTitle>
