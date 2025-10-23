@@ -58,7 +58,7 @@ function UserEditorInternal({ user, propagateChanges, adminCreated, trigger }: U
 
   useEffect(() => {
     if (!companyFromContext && userCompany) setCompany(userCompany);
-  }, [company]);
+  }, [companyFromContext, userCompany]);
 
   const formSchema = z.object({
     id: z.uuidv4(),
@@ -131,7 +131,7 @@ function UserEditorInternal({ user, propagateChanges, adminCreated, trigger }: U
       avatar: resetImage ? undefined : values.avatar,
       roleIds: values.roleIds,
       sendInvitationEmail: values.sendInvitationEmail,
-      companyId: company!.id,
+      companyId: company?.id,
       adminCreated: adminCreated,
     };
 
@@ -155,12 +155,12 @@ function UserEditorInternal({ user, propagateChanges, adminCreated, trigger }: U
   useEffect(() => {
     async function fetchRoles() {
       const roles = await RoleService.findAllRoles({});
+      console.log();
 
       const availableRoles = roles.filter(
         (role: RoleInterface) =>
-          role.id !== AuthRole.Administrator &&
-          (role.requiredFeature === undefined ||
-            company?.features.some((feature) => feature.id === role.requiredFeature?.id)),
+          (role.id !== AuthRole.Administrator && role.requiredFeature === undefined) ||
+          company?.features.some((feature) => feature.id === role.requiredFeature?.id),
       );
 
       setRoles(availableRoles);
@@ -198,7 +198,8 @@ function UserEditorInternal({ user, propagateChanges, adminCreated, trigger }: U
   }, [file]);
 
   const canChangeRoles =
-    hasPermissionToModule({ module: Modules.Role, action: Action.Update }) || hasRole(AuthRole.Administrator);
+    !(currentUser.id === user?.id && hasRole(AuthRole.Administrator)) &&
+    (hasPermissionToModule({ module: Modules.Role, action: Action.Update }) || hasRole(AuthRole.Administrator));
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>

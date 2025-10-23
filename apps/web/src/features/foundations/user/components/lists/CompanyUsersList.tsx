@@ -40,7 +40,7 @@ export default function CompanyUsersList({ isDeleted }: CompanyUsersListProps) {
       data={data}
       fields={[UserFields.name, UserFields.email]}
       tableGeneratorType={Modules.User}
-      functions={functions}
+      functions={isDeleted ? undefined : functions}
       title={t(`types.users`, { count: 2 })}
     />
   );

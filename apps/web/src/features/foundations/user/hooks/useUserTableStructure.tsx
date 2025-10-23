@@ -8,6 +8,7 @@ import { UserFields } from "@/features/foundations/user/data/UserFields";
 import { UserInterface } from "@/features/foundations/user/data/UserInterface";
 import { usePageUrlGenerator } from "@/hooks/usePageUrlGenerator";
 import { registerTableGenerator } from "@/hooks/useTableGenerator";
+import { cn } from "@/lib/utils";
 import { Modules } from "@/modules/modules";
 import { ColumnDef, Row } from "@tanstack/react-table";
 import { useTranslations } from "next-intl";
@@ -44,7 +45,16 @@ export const useUserTableStructure: UseTableStructureHook<UserInterface, UserFie
       header: t(`foundations.user.fields.name.label`),
       cell: ({ row }: { row: Row<TableContent<UserInterface>> }) => {
         const user = row.original.jsonApiData as UserInterface;
-        return <Link href={generateUrl({ page: Modules.User, id: user.id })}>{row.getValue("name")}</Link>;
+        return (
+          <Link
+            href={generateUrl({ page: Modules.User, id: user.id })}
+            className={cn(``, user.isDeleted || !user.isActivated ? "text-muted-foreground italic" : "")}
+          >
+            {user.name}
+            {user.isDeleted ? ` - ${t("foundations.user.errors.deleted")}` : ""}
+            {!user.isActivated ? ` - ${t("foundations.user.errors.inactive")}` : ""}
+          </Link>
+        );
       },
       enableSorting: false,
       enableHiding: false,

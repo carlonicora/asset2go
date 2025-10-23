@@ -37,6 +37,7 @@ export class UserService {
     term?: string;
     userIds?: string[];
     includeDeleted?: boolean;
+    isDeleted?: boolean;
   }): Promise<JsonApiDataInterface> {
     const paginator: JsonApiPaginator = new JsonApiPaginator(params.query);
 
@@ -46,6 +47,7 @@ export class UserService {
         term: params.term,
         cursor: paginator.generateCursor(),
         includeDeleted: params.includeDeleted ?? false,
+        isDeleted: params.isDeleted,
       }),
       paginator,
     );

@@ -89,6 +89,7 @@ export class UserService extends AbstractService {
 
     if (params.search) endpoint.addAdditionalParam("search", params.search);
     if (params.isDeleted) endpoint.addAdditionalParam("isDeleted", "true");
+    else endpoint.addAdditionalParam("includeDeleted", "false");
     if (params.limitToRoles && params.limitToRoles.length > 0)
       endpoint.addAdditionalParam("limitToRoles", params.limitToRoles.join(","));
 

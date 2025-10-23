@@ -52,6 +52,7 @@ export class UserController {
     @Query() query: any,
     @Query("search") search?: string,
     @Query("includeDeleted") includeDeleted?: boolean,
+    @Query("isDeleted") isDeleted?: boolean,
   ) {
     const isAdmin = this.security.isUserInRoles({
       user: request.user,
@@ -63,6 +64,7 @@ export class UserController {
       term: search,
       isAdmin: isAdmin,
       includeDeleted: includeDeleted ?? false,
+      isDeleted: isDeleted,
     });
 
     reply.send(response);
