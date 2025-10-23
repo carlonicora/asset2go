@@ -90,7 +90,6 @@ function UserEditorInternal({ user, propagateChanges, adminCreated, trigger }: U
   });
 
   const onSubmit: SubmitHandler<z.infer<typeof formSchema>> = async (values: z.infer<typeof formSchema>) => {
-    console.log("Submitting", values);
     if (!user) {
       try {
         const existingUser = await UserService.findByEmail({ email: values.email });

@@ -225,6 +225,7 @@ export class UserRepository implements OnModuleInit {
   async findMany(params: {
     term?: string;
     includeDeleted?: boolean;
+    isDeleted?: boolean;
     cursor?: JsonApiCursorInterface;
   }): Promise<User[]> {
     const query = this.neo4j.initQuery({ serialiser: UserModel, cursor: params.cursor });
@@ -236,7 +237,13 @@ export class UserRepository implements OnModuleInit {
 
     query.query += `
      ${this.userCypherService.default()}
-      
+      ${
+        params.isDeleted !== undefined
+          ? `AND user.isDeleted=true`
+          : params.includeDeleted === undefined || params.includeDeleted === true
+            ? ``
+            : `AND (user.isDeleted=false OR user.isDeleted IS NULL)`
+      }
       ORDER BY user.name ASC
       {CURSOR}
 
