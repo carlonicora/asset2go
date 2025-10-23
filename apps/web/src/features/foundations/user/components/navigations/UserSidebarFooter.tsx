@@ -24,7 +24,8 @@ import { usePageUrlGenerator } from "@/hooks/usePageUrlGenerator";
 import { usePathname, useRouter } from "@/i18n/routing";
 import { Modules } from "@/modules/modules";
 import { AuthRole } from "@/permisions/enums/AuthRole";
-import { ChevronsUpDown, LogOut, UserIcon } from "lucide-react";
+import { Action } from "@/permisions/types";
+import { ChevronsUpDown, LogOut, UserIcon, UsersIcon } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 
 type UserSidebarFooterProps = {
@@ -33,7 +34,7 @@ type UserSidebarFooterProps = {
 };
 
 export default function UserSidebarFooter({ notificationModalOpen, setNotificationModalOpen }: UserSidebarFooterProps) {
-  const { currentUser } = useCurrentUserContext();
+  const { currentUser, hasPermissionToModule } = useCurrentUserContext();
   const { isMobile } = useSidebar();
   const generateUrl = usePageUrlGenerator();
   const t = useTranslations();
@@ -112,6 +113,19 @@ export default function UserSidebarFooter({ notificationModalOpen, setNotificati
                   </DropdownMenuPortal>
                 </DropdownMenuSub>
               </DropdownMenuGroup>
+              {hasPermissionToModule({ module: Modules.User, action: Action.Update }) && (
+                <>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuGroup>
+                    <Link href={generateUrl({ page: Modules.User })}>
+                      <DropdownMenuItem>
+                        <UsersIcon />
+                        {t(`types.users`, { count: 2 })}
+                      </DropdownMenuItem>
+                    </Link>
+                  </DropdownMenuGroup>
+                </>
+              )}
               <DropdownMenuSeparator />
               <DropdownMenuGroup>
                 <Link href={generateUrl({ page: Modules.User, id: currentUser.id })}>
