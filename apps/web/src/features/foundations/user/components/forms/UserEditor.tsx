@@ -183,8 +183,6 @@ function UserEditorInternal({ user, propagateChanges, adminCreated, trigger }: U
 
   const canChangeRoles =
     hasPermissionToModule({ module: Modules.Role, action: Action.Update }) || hasRole(AuthRole.Administrator);
-  const canChangeLineManager =
-    !companyFromContext && hasPermissionToModule({ module: Modules.User, action: Action.Delete });
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -245,12 +243,8 @@ function UserEditorInternal({ user, propagateChanges, adminCreated, trigger }: U
                 />
               </div>
               <div className="flex w-1/3 flex-col">
-                {(canChangeRoles || canChangeLineManager) && (
-                  <>
-                    {canChangeRoles && (
-                      <FormRoles form={form} id="roleIds" name={t(`types.roles`, { count: 2 })} roles={roles} />
-                    )}
-                  </>
+                {canChangeRoles && (
+                  <FormRoles form={form} id="roleIds" name={t(`types.roles`, { count: 2 })} roles={roles} />
                 )}
                 {!user && (
                   <div className="flex flex-col gap-y-4">
