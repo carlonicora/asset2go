@@ -7,19 +7,19 @@ import { DataListRetriever, useDataListRetriever } from "@/hooks/useDataListRetr
 import { Modules } from "@/modules/modules";
 
 import { ContentListTable } from "@/features/common/components/tables/ContentListTable";
-import { useCompanyContext } from "@/features/foundations/company/contexts/CompanyContext";
 import UserEditor from "@/features/foundations/user/components/forms/UserEditor";
+import { useCurrentUserContext } from "@/features/foundations/user/contexts/CurrentUserContext";
 import { UserFields } from "@/features/foundations/user/data/UserFields";
 import "@/features/foundations/user/hooks/useUserTableStructure";
 import { useTranslations } from "next-intl";
-import { ReactNode } from "react";
+import { ReactNode, useEffect } from "react";
 
 type CompanyUsersListProps = {
   isDeleted?: boolean;
 };
 
 export default function CompanyUsersList({ isDeleted }: CompanyUsersListProps) {
-  const { company } = useCompanyContext();
+  const { company } = useCurrentUserContext();
   const t = useTranslations();
 
   const data: DataListRetriever<UserInterface> = useDataListRetriever({
@@ -28,6 +28,10 @@ export default function CompanyUsersList({ isDeleted }: CompanyUsersListProps) {
     retrieverParams: { companyId: company?.id, isDeleted: isDeleted },
     module: Modules.User,
   });
+
+  useEffect(() => {
+    if (company) data.setReady(true);
+  }, [company]);
 
   const functions: ReactNode[] = [<UserEditor key="create-user" propagateChanges={data.refresh} />];
 
