@@ -14,6 +14,9 @@ export class AuditService {
   ) {}
 
   async createAuditEntry(params: { entityType: string; entityId: string }): Promise<void> {
+    //TODO: Enable audit logs
+    if (true === true) return; // Audit log disabled for now
+
     const userId = this.clsService.get("userId");
     if (!userId) return;
 
