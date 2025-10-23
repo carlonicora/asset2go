@@ -24,16 +24,7 @@ import { usePageUrlGenerator } from "@/hooks/usePageUrlGenerator";
 import { Modules } from "@/modules/modules";
 import { AuthRole } from "@/permisions/enums/AuthRole";
 import { useAtomValue } from "jotai";
-import {
-  BellIcon,
-  Building2Icon,
-  HammerIcon,
-  HandCoinsIcon,
-  HistoryIcon,
-  HomeIcon,
-  PackageIcon,
-  UsersIcon,
-} from "lucide-react";
+import { BellIcon, HammerIcon, HandCoinsIcon, HistoryIcon, HomeIcon, PackageIcon, UsersIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import { Fragment, ReactNode, useMemo, useState } from "react";
@@ -100,12 +91,12 @@ export default function CommonSidebar() {
     }
 
     if (company) {
-      navMap.get("")?.items.push({
-        title: company.name,
-        url: generateUrl({ page: Modules.Company }),
-        icon: <Building2Icon />,
-        testId: "sidebar-my-company-link",
-      });
+      // navMap.get("")?.items.push({
+      //   title: company.name,
+      //   url: generateUrl({ page: Modules.Company }),
+      //   icon: <Building2Icon />,
+      //   testId: "sidebar-my-company-link",
+      // });
 
       navMap.get("")?.items.push({
         title: t(`types.equipments`, { count: 2 }),
