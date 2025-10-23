@@ -2,6 +2,7 @@
  * This migration creates the initial administrator user in the database.
  */
 
+import { randomUUID } from "crypto";
 import { MigrationInterface } from "src/core/migrator/interfaces/migration.interface";
 
 export const migration: MigrationInterface[] = [
@@ -20,7 +21,7 @@ export const migration: MigrationInterface[] = [
           MERGE (u)-[:MEMBER_OF]->(r)
         `,
     queryParams: {
-      id: "a63553fb-5d3c-11ee-9dc3-0242ac120003",
+      id: randomUUID(),
       name: "Administrator",
       email: "carlo.nicora@gmail.com",
       password: "$2a$10$ZDt9V644BLOC.HTBDrzFlOcg5WWaHIFcDaoPhSVaiEA9xGyp0NtOq",
