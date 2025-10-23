@@ -31,7 +31,7 @@ import { VersionModule } from "./version/version.module";
         const jwtConfig = config.get<ConfigJwtInterface>("jwt");
         return {
           secret: jwtConfig.secret,
-          signOptions: { expiresIn: jwtConfig.expiresIn },
+          signOptions: { expiresIn: jwtConfig.expiresIn as any },
         };
       },
     }),
