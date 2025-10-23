@@ -22,7 +22,7 @@
     "@nestjs/jwt": "^11.0.0",
     "@nestjs/microservices": "^11.1.6",
     "@nestjs/passport": "^11.0.5",
-    "@nestjs/platform-fastify": "^11.1.6",
+    "@nestjs/platform-fastify": "^11.1.7",
     "@nestjs/platform-socket.io": "^11.1.6",
     "@nestjs/schedule": "^6.0.1",
     "@nestjs/schematics": "^11.0.7",
