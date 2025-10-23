@@ -1,6 +1,5 @@
 "use client";
 
-import PageContentContainer, { PageContentData } from "@/features/common/components/containers/PageContentContainer";
 import UserDetails from "@/features/foundations/user/components/details/UserDetails";
 import { useUserContext } from "@/features/foundations/user/contexts/UserContext";
 import { useTranslations } from "next-intl";
@@ -11,10 +10,14 @@ export default function UserContainer() {
 
   const t = useTranslations();
 
-  const pageContent: PageContentData = {
-    details: <UserDetails />,
-    sections: [],
-  };
-
-  return <PageContentContainer data={pageContent} />;
+  return (
+    <div className="flex w-full gap-x-4">
+      <div className="w-2xl flex h-[calc(100vh-theme(spacing.20))] flex-col justify-between border-r pr-4">
+        <div className="flex h-full overflow-y-auto">
+          <UserDetails user={user} />
+        </div>
+      </div>
+      <div className="flex w-full flex-col gap-y-4"></div>
+    </div>
+  );
 }
