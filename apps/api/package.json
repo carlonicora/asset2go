@@ -10,6 +10,7 @@
     "@fastify/multipart": "^9.2.1",
     "@fastify/static": "^8.2.0",
     "@fastify/swagger": "^9.5.2",
+    "@getbrevo/brevo": "^3.0.1",
     "@microsoft/microsoft-graph-client": "^3.0.7",
     "@microsoft/microsoft-graph-types": "^2.43.0",
     "@nestjs/bullmq": "^11.0.3",
