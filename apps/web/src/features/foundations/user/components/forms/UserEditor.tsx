@@ -90,6 +90,16 @@ function UserEditorInternal({ user, propagateChanges, adminCreated, trigger }: U
   });
 
   const onSubmit: SubmitHandler<z.infer<typeof formSchema>> = async (values: z.infer<typeof formSchema>) => {
+    const existingUser = await UserService.findByEmail({ email: values.email });
+    if (existingUser) {
+      form.setError("email", {
+        type: "manual",
+        message: t(`foundations.user.errors.email_exists`),
+      });
+      errorToast({ title: t(`foundations.user.errors.email_exists`), error: "" });
+      return;
+    }
+
     if (values.avatar && contentType) {
       const s3: S3Interface = await S3Service.getPreSignedUrl({
         key: values.avatar,

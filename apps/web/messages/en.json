@@ -300,6 +300,9 @@
       }
     },
     "user": {
+      "errors": {
+        "email_exists": "A user with this email already exists in the system."
+      },
       "buttons": {
         "add": "Add User",
         "reactivate": "Reactivate User",

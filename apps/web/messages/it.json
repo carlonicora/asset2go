@@ -300,6 +300,9 @@
       }
     },
     "user": {
+      "errors": {
+        "email_exists": "Un utente con questa email esiste già nel sistema."
+      },
       "buttons": {
         "add": "Aggiungi Utente",
         "reactivate": "Riattiva Utente",
