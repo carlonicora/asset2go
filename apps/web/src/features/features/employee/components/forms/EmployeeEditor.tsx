@@ -32,7 +32,7 @@ export default function EmployeeEditor({ employee, propagateChanges }: EmployeeE
   const t = useTranslations();
 
   const formSchema = z.object({
-    id: z.uuid(),
+    id: z.uuidv4(),
     name: z.string().min(1, {
       message: t(`features.employee.fields.name.error`),
     }),

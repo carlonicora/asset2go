@@ -61,7 +61,7 @@ function UserEditorInternal({ user, propagateChanges, adminCreated, trigger }: U
   }, [company]);
 
   const formSchema = z.object({
-    id: z.string().uuid().min(1),
+    id: z.uuidv4(),
     name: z.string().min(1, { message: t(`foundations.user.fields.name.error`) }),
     email: z.string().min(1, { message: t(`foundations.user.fields.email.error`) }),
     password: z.string().optional(),
@@ -90,6 +90,22 @@ function UserEditorInternal({ user, propagateChanges, adminCreated, trigger }: U
   });
 
   const onSubmit: SubmitHandler<z.infer<typeof formSchema>> = async (values: z.infer<typeof formSchema>) => {
+    if (!user) {
+      try {
+        const existingUser = await UserService.findByEmail({ email: values.email });
+        if (existingUser) {
+          form.setError("email", {
+            type: "manual",
+            message: t(`foundations.user.errors.email_exists`),
+          });
+          errorToast({ title: t(`foundations.user.errors.email_exists`), error: "" });
+          return;
+        }
+      } catch (error) {
+        // User does not exist, proceed
+      }
+    }
+
     if (values.avatar && contentType) {
       const s3: S3Interface = await S3Service.getPreSignedUrl({
         key: values.avatar,
@@ -183,8 +199,6 @@ function UserEditorInternal({ user, propagateChanges, adminCreated, trigger }: U
 
   const canChangeRoles =
     hasPermissionToModule({ module: Modules.Role, action: Action.Update }) || hasRole(AuthRole.Administrator);
-  const canChangeLineManager =
-    !companyFromContext && hasPermissionToModule({ module: Modules.User, action: Action.Delete });
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -245,12 +259,8 @@ function UserEditorInternal({ user, propagateChanges, adminCreated, trigger }: U
                 />
               </div>
               <div className="flex w-1/3 flex-col">
-                {(canChangeRoles || canChangeLineManager) && (
-                  <>
-                    {canChangeRoles && (
-                      <FormRoles form={form} id="roleIds" name={t(`types.roles`, { count: 2 })} roles={roles} />
-                    )}
-                  </>
+                {canChangeRoles && (
+                  <FormRoles form={form} id="roleIds" name={t(`types.roles`, { count: 2 })} roles={roles} />
                 )}
                 {!user && (
                   <div className="flex flex-col gap-y-4">

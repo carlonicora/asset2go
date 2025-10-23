@@ -35,26 +35,6 @@ export const migration: MigrationInterface[] = [
   {
     query: moduleQuery,
     queryParams: {
-      moduleName: "Configuration",
-      moduleId: "f000aad8-a67c-43ba-8c7d-5c454c83ece9",
-      featureId: "17036fb0-060b-4c83-a617-f32259819783",
-      isCore: true,
-      permissions: JSON.stringify([]),
-    },
-  },
-  {
-    query: moduleQuery,
-    queryParams: {
-      moduleName: "Feature",
-      moduleId: "025fdd23-2803-4360-9fd9-eaa3612c2e23",
-      featureId: null,
-      isCore: true,
-      permissions: JSON.stringify([{ type: Action.Read, value: true }]),
-    },
-  },
-  {
-    query: moduleQuery,
-    queryParams: {
       moduleName: "Notification",
       moduleId: "9259d704-c670-4e77-a3a1-a728ffc5be3d",
       featureId: null,

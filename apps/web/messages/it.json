@@ -300,6 +300,11 @@
       }
     },
     "user": {
+      "errors": {
+        "email_exists": "Un utente con questa email esiste già nel sistema.",
+        "deleted": "Utente disabilitato",
+        "inactive": "Utente non attivo"
+      },
       "buttons": {
         "add": "Aggiungi Utente",
         "reactivate": "Riattiva Utente",
@@ -384,7 +389,8 @@
       "edit": "Modifica",
       "load_more": "Carica Altro",
       "remove": "Rimuovi",
-      "select_all": "Seleziona Tutto"
+      "select_all": "Seleziona Tutto",
+      "is_deleting": "Eliminando..."
     },
     "date": {
       "create": "Creazione",

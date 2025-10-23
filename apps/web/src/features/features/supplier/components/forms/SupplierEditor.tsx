@@ -7,8 +7,6 @@ import CommonEditorButtons from "@/features/common/components/forms/CommonEditor
 import CommonEditorHeader from "@/features/common/components/forms/CommonEditorHeader";
 import CommonEditorTrigger from "@/features/common/components/forms/CommonEditorTrigger";
 import FormInput from "@/features/common/components/forms/FormInput";
-import FormTextarea from "@/features/common/components/forms/FormTextarea";
-import FormDate from "@/features/common/components/forms/FormDate";
 import { SupplierInput, SupplierInterface } from "@/features/features/supplier/data/SupplierInterface";
 import { SupplierService } from "@/features/features/supplier/data/SupplierService";
 import { usePageUrlGenerator } from "@/hooks/usePageUrlGenerator";
@@ -21,7 +19,6 @@ import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { v4 } from "uuid";
 import { z } from "zod";
-import { entityObjectSchema } from "@/lib/entity.object.schema";
 
 type SupplierEditorProps = {
   supplier?: SupplierInterface;
@@ -35,7 +32,7 @@ export default function SupplierEditor({ supplier, propagateChanges }: SupplierE
   const t = useTranslations();
 
   const formSchema = z.object({
-    id: z.uuid(),
+    id: z.uuidv4(),
     name: z.string().min(1, {
       message: t(`features.supplier.fields.name.error`),
     }),
@@ -46,10 +43,10 @@ export default function SupplierEditor({ supplier, propagateChanges }: SupplierE
 
   const getDefaultValues = () => ({
     id: supplier?.id || v4(),
-      name: supplier?.name || "",
-      address: supplier?.address || "",
-      email: supplier?.email || "",
-      phone: supplier?.phone || "",
+    name: supplier?.name || "",
+    address: supplier?.address || "",
+    email: supplier?.email || "",
+    phone: supplier?.phone || "",
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -73,9 +70,7 @@ export default function SupplierEditor({ supplier, propagateChanges }: SupplierE
     };
 
     try {
-      const updatedSupplier = supplier
-        ? await SupplierService.update(payload)
-        : await SupplierService.create(payload);
+      const updatedSupplier = supplier ? await SupplierService.update(payload) : await SupplierService.create(payload);
 
       revalidatePaths(generateUrl({ page: Modules.Supplier, id: updatedSupplier.id, language: `[locale]` }));
       if (supplier && propagateChanges) {

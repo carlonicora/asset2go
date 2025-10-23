@@ -35,7 +35,7 @@ export default function LoanEditor({ loan, propagateChanges }: LoanEditorProps) 
   const t = useTranslations();
 
   const formSchema = z.object({
-    id: z.uuid(),
+    id: z.uuidv4(),
     startDate: z.date().refine((val) => val !== undefined, {
       message: t(`features.loan.fields.startDate.error`),
     }),

@@ -1,6 +1,5 @@
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
-import sendGridMail = require("@sendgrid/mail");
 import * as fs from "fs";
 import * as Handlebars from "handlebars";
 import * as nodemailer from "nodemailer";
@@ -8,6 +7,7 @@ import { join } from "path";
 import { BaseConfigInterface } from "src/common/config/interfaces/base.config.interface";
 import { ConfigAppInterface } from "src/common/config/interfaces/config.app.interface";
 import { ConfigEmailInterface } from "src/common/config/interfaces/config.email.interface";
+import sendGridMail = require("@sendgrid/mail");
 
 export interface EmailParams {
   to: string | string[];
@@ -83,10 +83,16 @@ export class EmailService {
     const subject = emailParams.subject || extractedTitle;
 
     try {
-      if (this.config.get<ConfigEmailInterface>("email").emailProvider === "sendgrid") {
-        await this.sendEmailWithSendGrid(to, subject, html);
-      } else {
-        await this.sendEmailWithSmtp(to, subject, html);
+      switch (this.config.get<ConfigEmailInterface>("email").emailProvider) {
+        case "brevo":
+          await this.sendEmailWithBrevo(to, subject, html);
+          break;
+        case "sendgrid":
+          await this.sendEmailWithSendGrid(to, subject, html);
+          break;
+        case "smtp":
+          await this.sendEmailWithSmtp(to, subject, html);
+          break;
       }
     } catch (error) {
       console.error("Error sending email:", error);
@@ -135,6 +141,26 @@ export class EmailService {
       });
     } else {
       throw new Error("Invalid email address format");
+    }
+  }
+
+  private async sendEmailWithBrevo(to: string | string[], subject: string, html: string): Promise<void> {
+    const brevo = require("@getbrevo/brevo");
+    const apiInstance = new brevo.TransactionalEmailsApi();
+
+    apiInstance.authentications.apiKey.apiKey = this.config.get<ConfigEmailInterface>("email").emailApiKey;
+
+    const sendSmtpEmail = new brevo.SendSmtpEmail();
+
+    sendSmtpEmail.subject = subject;
+    sendSmtpEmail.htmlContent = html;
+    sendSmtpEmail.sender = this.convertToEmailAddressArray(this.config.get<ConfigEmailInterface>("email").emailFrom)[0];
+    sendSmtpEmail.to = this.convertToEmailAddressArray(to);
+
+    try {
+      await apiInstance.sendTransacEmail(sendSmtpEmail);
+    } catch (error) {
+      console.error(error);
     }
   }
 

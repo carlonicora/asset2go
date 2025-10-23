@@ -429,7 +429,6 @@ export class UserRepository implements OnModuleInit {
     setClauses.push("user.email = $email");
     setClauses.push("user.title = $title");
     setClauses.push("user.bio = $bio");
-    setClauses.push("user.github = $github");
     if (!params.preserveAvatar) setClauses.push("user.avatar = $avatar");
     if (params.password !== undefined && params.password !== "") setClauses.push("user.password = $password");
     if (params.isActive !== undefined) {
