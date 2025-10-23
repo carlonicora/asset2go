@@ -1,3 +1,34 @@
+## [1.8.0](https://github.com/carlonicora/asset2go/compare/v1.7.9...v1.8.0) (2025-10-23)
+
+### 🚀 Features
+
+* add brevo in list of supported email services ([bfd4267](https://github.com/carlonicora/asset2go/commit/bfd426735a09252b93da397a02aa1f5c49d8d95c))
+* add brevo package ([0ad4b50](https://github.com/carlonicora/asset2go/commit/0ad4b50944ae316a2c7ec334a80665cebc46a9ee))
+* add email validation to avoid user duplication ([104f035](https://github.com/carlonicora/asset2go/commit/104f035d55ed2dd058f18043cc7ed35e3e1894f8))
+* add user management in user menu ([ee00b3d](https://github.com/carlonicora/asset2go/commit/ee00b3dc442961ec171513e7b98888416e2a27dd))
+
+### 🐛 Bug Fixes
+
+* add claude md ([1dd6379](https://github.com/carlonicora/asset2go/commit/1dd63792b8c7b8748d0fb5af55e43320d4995df2))
+* add missing dependencies ([8331f8c](https://github.com/carlonicora/asset2go/commit/8331f8cdbbf7e652007a3f7559a7df5ad3a07a74))
+* correct company editor for administrators ([be6e02a](https://github.com/carlonicora/asset2go/commit/be6e02a7d88513254c0678fd772496f9d9c7440b))
+* correct company users list ([867001b](https://github.com/carlonicora/asset2go/commit/867001b21eacf45849a7c9c8d193431a35d1d8c6))
+* correct configuration adding brevo as email provider ([863d367](https://github.com/carlonicora/asset2go/commit/863d3671656c260a2ea226db0b4a624648a342c8))
+* correct dependencies ([4163543](https://github.com/carlonicora/asset2go/commit/4163543cc918575d3e209652aeb12f8be9273fb3))
+* correct email validation ([946b938](https://github.com/carlonicora/asset2go/commit/946b93849f160276dd75120c07e4d51c68dda5ec))
+* correct jwt expiresIn value ([2001e8d](https://github.com/carlonicora/asset2go/commit/2001e8d3aadc79d38d05d55eac69141bab9663b3))
+* correct migrations ([4cb6597](https://github.com/carlonicora/asset2go/commit/4cb65972b715e6327c16afb8f842daf24a54ae0b))
+* correct user container ([2c7ea6f](https://github.com/carlonicora/asset2go/commit/2c7ea6f8d89a80bf16d22ba0f282d44c176704a0))
+* correct user reactivation and invitation ([d64902b](https://github.com/carlonicora/asset2go/commit/d64902b15ac368af560f329ff5f500203109f279))
+* deactivated audit log ([7a04d31](https://github.com/carlonicora/asset2go/commit/7a04d3139ca3adfd237b7e5f5ac4969da059aa3b))
+* remove company details from company container ([beab372](https://github.com/carlonicora/asset2go/commit/beab372f371439946ca8bead79a71918d3e48387))
+* remove company management from sidebar ([1c433c8](https://github.com/carlonicora/asset2go/commit/1c433c89d217a965ae0a0555aa6703ec00474d9a))
+* remove email validation from existing user ([98d3aae](https://github.com/carlonicora/asset2go/commit/98d3aae97898c900cfde666d92d4e9ebdccda898))
+* remove line manager from user editor ([4fde439](https://github.com/carlonicora/asset2go/commit/4fde439c91cf5964d726b938cc36891c2b80ed1b))
+* remove old github references from user ([11627ab](https://github.com/carlonicora/asset2go/commit/11627ab09ad08690770685332dbd345bf9763d85))
+* remove unused configurations ([790bceb](https://github.com/carlonicora/asset2go/commit/790bcebdb9e855b8596bcb3ee45f1bc99e794a74))
+* removed unudes file ([ad06dfc](https://github.com/carlonicora/asset2go/commit/ad06dfc070904c139b9efdcef347a2e35e376287))
+
 ## [1.7.9](https://github.com/carlonicora/asset2go/compare/v1.7.8...v1.7.9) (2025-10-13)
 
 ### 🐛 Bug Fixes
