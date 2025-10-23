@@ -61,7 +61,7 @@ function UserEditorInternal({ user, propagateChanges, adminCreated, trigger }: U
   }, [company]);
 
   const formSchema = z.object({
-    id: z.string().uuid().min(1),
+    id: z.uuidv4(),
     name: z.string().min(1, { message: t(`foundations.user.fields.name.error`) }),
     email: z.string().min(1, { message: t(`foundations.user.fields.email.error`) }),
     password: z.string().optional(),

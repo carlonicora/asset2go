@@ -18,13 +18,13 @@ import { useRouter } from "@/i18n/routing";
 import { entityObjectSchema } from "@/lib/entity.object.schema";
 import { revalidatePaths } from "@/lib/PageRevalidation";
 import { Modules } from "@/modules/modules";
+import { EquipmentStatus } from "@asset2go/shared";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { v4 } from "uuid";
 import { z } from "zod";
-import { EquipmentStatus } from "../../../../../../../../packages/shared/dist";
 
 type EquipmentEditorProps = {
   equipment?: EquipmentInterface;
@@ -38,7 +38,7 @@ export default function EquipmentEditor({ equipment, propagateChanges }: Equipme
   const t = useTranslations();
 
   const formSchema = z.object({
-    id: z.uuid(),
+    id: z.uuidv4(),
     name: z.string().min(1, {
       message: t(`features.equipment.fields.name.error`),
     }),
