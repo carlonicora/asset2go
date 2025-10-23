@@ -49,15 +49,6 @@ export default async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
-  const requestsSupport = normalizedPathname.startsWith("/support");
-  if (
-    (!process.env.NEXT_PUBLIC_PRIVATE_INSTALLATION ||
-      process.env.NEXT_PUBLIC_PRIVATE_INSTALLATION.toLowerCase() !== "true") &&
-    requestsSupport
-  ) {
-    return NextResponse.redirect(new URL("/", request.url));
-  }
-
   const intlResponse = intlMiddleware(request);
   const response = intlResponse instanceof NextResponse ? intlResponse : NextResponse.next();
 
