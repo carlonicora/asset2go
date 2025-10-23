@@ -71,10 +71,7 @@ export class AuthRepository implements OnModuleInit {
       OPTIONAL MATCH (auth_user)-[:MEMBER_OF]->(auth_user_group:Group) 
       OPTIONAL MATCH (auth_user)-[:BELONGS_TO]->(auth_user_company:Company)
       OPTIONAL MATCH (auth_user_company)-[:HAS_FEATURE]->(auth_user_company_feature:Feature)
-      OPTIONAL MATCH (auth_user_company)-[:OWNS]->(auth_user_company_workspace:Workspace)
-      OPTIONAL MATCH (auth_user_company)<-[:BELONGS_TO]-(auth_user_company_githubconnect:GitHubConnect)
-      OPTIONAL MATCH (auth_user)<-[:CREATED_BY]-()-[:BOOKMARKS]->(auth_user_taxonomy:Taxonomy)
-      RETURN auth, auth_user, auth_user_role, auth_user_group, auth_user_company, auth_user_company_feature, auth_user_company_workspace, auth_user_taxonomy, auth_user_company_githubconnect
+      RETURN auth, auth_user, auth_user_role, auth_user_group, auth_user_company, auth_user_company_feature
     `;
 
     const auth = await this.neo4j.readOne(query);
@@ -376,10 +373,7 @@ WITH auth, auth_user, auth_user_role, module,
       OPTIONAL MATCH (auth_user)-[:MEMBER_OF]->(auth_user_role:Role)
       OPTIONAL MATCH (auth_user)-[:BELONGS_TO]->(auth_user_company:Company)
       OPTIONAL MATCH (auth_user_company)-[:HAS_FEATURE]->(auth_user_company_feature:Feature)
-      OPTIONAL MATCH (auth_user_company)-[:OWNS]->(auth_user_company_workspace:Workspace)
-      OPTIONAL MATCH (auth_user_company)<-[:BELONGS_TO]-(auth_user_company_githubconnect:GitHubConnect)
-      OPTIONAL MATCH (auth_user)<-[:CREATED_BY]-()-[:BOOKMARKS]->(auth_user_taxonomy:Taxonomy)
-      RETURN auth, auth_user, auth_user_role, auth_user_company, auth_user_company_feature, auth_user_company_workspace, auth_user_taxonomy, auth_user_company_githubconnect
+      RETURN auth, auth_user, auth_user_role, auth_user_company, auth_user_company_feature
     `;
 
     const auth = await this.neo4j.writeOne(query);
@@ -469,10 +463,7 @@ WITH auth, auth_user, auth_user_role, module,
       OPTIONAL MATCH (auth_user)-[:MEMBER_OF]->(auth_user_role:Role)
       OPTIONAL MATCH (auth_user)-[:BELONGS_TO]->(auth_user_company:Company)
       OPTIONAL MATCH (auth_user_company)-[:HAS_FEATURE]->(auth_user_company_feature:Feature)
-      OPTIONAL MATCH (auth_user_company)-[:OWNS]->(auth_user_company_workspace:Workspace)
-      OPTIONAL MATCH (auth_user_company)<-[:BELONGS_TO]-(auth_user_company_githubconnect:GitHubConnect)
-      OPTIONAL MATCH (auth_user)<-[:CREATED_BY]-()-[:BOOKMARKS]->(auth_user_taxonomy:Taxonomy)
-      RETURN auth, auth_user, auth_user_role, auth_user_company, auth_user_company_feature, auth_user_company_workspace, auth_user_taxonomy, auth_user_company_githubconnect
+      RETURN auth, auth_user, auth_user_role, auth_user_company, auth_user_company_feature
     `;
 
     const auth = await this.neo4j.writeOne(query);

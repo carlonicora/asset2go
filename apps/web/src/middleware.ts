@@ -36,25 +36,7 @@ function isTokenCloseToExpiry(token: string): boolean {
 }
 
 export default async function middleware(request: NextRequest) {
-  const { pathname, searchParams } = request.nextUrl;
-
-  if (pathname === "/githubconnects/callback") {
-    const code = searchParams.get("code");
-    const installation_id = searchParams.get("installation_id");
-    const setup_action = searchParams.get("setup_action");
-    const state = searchParams.get("state");
-
-    let path = null;
-    if (state && state.startsWith("Asset2Go")) {
-      path = decodeURIComponent(state.substring(5));
-    }
-
-    const nextPublicAddress = process.env.NEXT_PUBLIC_ADDRESS || "";
-    if (state && path && !nextPublicAddress.includes(path)) {
-      const redirectUrl = `${path}?code=${encodeURIComponent(code || "")}&installation_id=${encodeURIComponent(installation_id || "")}&setup_action=${encodeURIComponent(setup_action || "")}`;
-      return NextResponse.redirect(redirectUrl);
-    }
-  }
+  const { pathname } = request.nextUrl;
 
   const normalizedPathname = pathname.replace(/^\/([a-z]{2})(?=\/)/, "");
 
