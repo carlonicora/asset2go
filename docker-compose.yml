@@ -124,8 +124,6 @@ services:
       timeout: 5s
       retries: 3
       start_period: 40s
-    networks:
-      - asset2go-network
 
   # ---------------------------------------------------------------------------
   # Worker (Background Job Processing)
@@ -144,8 +142,6 @@ services:
       timeout: 5s
       retries: 3
       start_period: 30s
-    networks:
-      - asset2go-network
     command:
       - node
       - dist/main
@@ -189,12 +185,10 @@ services:
       timeout: 5s
       retries: 3
       start_period: 40s
-    networks:
-      - asset2go-network
 
 # =============================================================================
 # NETWORKS
 # =============================================================================
-networks:
-  asset2go-network:
-    driver: bridge
+# Note: No custom networks defined. Docker Compose will create a default network
+# automatically for local development. In production (Coolify), the override file
+# adds services to the external 'coolify' network.

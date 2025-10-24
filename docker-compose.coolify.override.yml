@@ -1,17 +1,14 @@
 services:
   api:
     networks:
-      - asset2go-network
       - coolify
 
   worker:
     networks:
-      - asset2go-network
       - coolify
 
   web:
     networks:
-      - asset2go-network
       - coolify
 
 networks:
