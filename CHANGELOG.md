@@ -1,3 +1,9 @@
+## [1.8.2](https://github.com/carlonicora/asset2go/compare/v1.8.1...v1.8.2) (2025-10-24)
+
+### 🐛 Bug Fixes
+
+* correct coolify network ([c468424](https://github.com/carlonicora/asset2go/commit/c468424489574ccbba282145b77b6776793c82fe))
+
 ## [1.8.1](https://github.com/carlonicora/asset2go/compare/v1.8.0...v1.8.1) (2025-10-23)
 
 ### 🐛 Bug Fixes
