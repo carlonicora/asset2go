@@ -9,14 +9,13 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { errorToast } from "@/features/common/components/errors/errorToast";
 import { UserInterface } from "@/features/foundations/user/data/UserInterface";
 import { UserService } from "@/features/foundations/user/data/UserService";
 import { Modules } from "@/modules/modules";
 import { Action } from "@/permisions/types";
 import withPermissions from "@/permisions/wrappers/withPermissions";
-import { UserPlus2Icon } from "lucide-react";
+import { UserCheckIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 
@@ -42,16 +41,12 @@ function UserReactivatorInterface({ user, propagateChanges }: UserReactivatorPro
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <DialogTrigger asChild>
-            <Button size="sm" variant={`ghost`} className="text-muted-foreground">
-              <UserPlus2Icon />
-            </Button>
-          </DialogTrigger>
-        </TooltipTrigger>
-        <TooltipContent>{t(`foundations.user.buttons.reactivate`)}</TooltipContent>
-      </Tooltip>
+      <DialogTrigger asChild>
+        <Button size="sm">
+          <UserCheckIcon className="mr-3 h-3.5 w-3.5" />
+          {t(`foundations.user.buttons.reactivate`)}
+        </Button>
+      </DialogTrigger>
       <DialogContent className={`flex max-h-[70vh] max-w-3xl flex-col overflow-y-auto`}>
         <DialogHeader>
           <DialogTitle>{t(`foundations.user.reactivate.title`)}</DialogTitle>

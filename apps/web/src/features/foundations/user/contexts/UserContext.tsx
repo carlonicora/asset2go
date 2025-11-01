@@ -67,7 +67,6 @@ export const UserProvider = ({ children, dehydratedUser }: UserProviderProps) =>
       } else {
         if (!user.isActivated)
           functions.push(<UserResentInvitationEmail key={`UserResentInvitationEmail`} user={user} />);
-
         functions.push(<UserDeleter key={`UserDeleter`} user={user} />);
       }
 
