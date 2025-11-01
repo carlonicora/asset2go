@@ -35,7 +35,7 @@ function isTokenCloseToExpiry(token: string): boolean {
   }
 }
 
-export default async function middleware(request: NextRequest) {
+export default async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   const normalizedPathname = pathname.replace(/^\/([a-z]{2})(?=\/)/, "");
