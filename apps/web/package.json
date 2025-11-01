@@ -5,7 +5,7 @@
   "scripts": {
     "build": "dotenv -e ../../.env --ignore-missing -- next build",
     "dev": "dotenv -e ../../.env --ignore-missing -- next dev",
-    "lint": "next lint",
+    "lint": "eslint .",
     "start": "dotenv -e ../../.env --ignore-missing -- next start -H 0.0.0.0",
     "test": "jest",
     "test:coverage": "jest --coverage",
@@ -14,7 +14,7 @@
     "test:e2e:ui": "playwright test --ui",
     "test:e2e:debug": "playwright test --debug",
     "format": "prettier --write .",
-    "typecheck": "next lint"
+    "typecheck": "eslint ."
   },
   "engines": {
     "node": "22"
@@ -111,7 +111,6 @@
     "xlsx-republish": "^0.20.3"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3.3.1",
     "@next/eslint-plugin-next": "16.0.1",
     "@playwright/test": "^1.55.1",
     "@semantic-release/changelog": "^6.0.3",
