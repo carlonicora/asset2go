@@ -1,3 +1,9 @@
+## [1.9.3](https://github.com/carlonicora/asset2go/compare/v1.9.2...v1.9.3) (2025-11-02)
+
+### 🐛 Bug Fixes
+
+* correct changelog in docker ([6009c73](https://github.com/carlonicora/asset2go/commit/6009c73f8ef0d41cf687db9763ca0f68c7dc96bb))
+
 ## [1.9.2](https://github.com/carlonicora/asset2go/compare/v1.9.1...v1.9.2) (2025-11-02)
 
 ### 🐛 Bug Fixes
