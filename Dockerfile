@@ -161,6 +161,7 @@ ENV NODE_ENV=production
 COPY --from=web-builder /app/package.json /app/pnpm-lock.yaml /app/pnpm-workspace.yaml ./
 COPY --from=web-builder /app/packages/shared ./packages/shared
 COPY --from=web-builder /app/apps/web ./apps/web
+COPY CHANGELOG.md ./
 
 # Install only production dependencies
 RUN pnpm install --frozen-lockfile --prod --ignore-scripts

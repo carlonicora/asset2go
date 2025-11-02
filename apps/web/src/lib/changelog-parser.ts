@@ -27,25 +27,11 @@ export interface ChangelogVersion {
  */
 export async function parseChangelog(): Promise<ChangelogVersion[]> {
   try {
-    // Try multiple possible paths to find CHANGELOG.md
-    const possiblePaths = [
-      path.join(process.cwd(), "../../CHANGELOG.md"), // If cwd is apps/web
-      path.join(process.cwd(), "CHANGELOG.md"),       // If cwd is monorepo root
-      path.join(__dirname, "../../../../CHANGELOG.md"), // Relative to this file (dev mode)
-    ];
+    const changelogPath = path.join(process.cwd(), "../../CHANGELOG.md");
 
-    let changelogPath: string | null = null;
-    for (const testPath of possiblePaths) {
-      if (fs.existsSync(testPath)) {
-        changelogPath = testPath;
-        break;
-      }
-    }
-
-    if (!changelogPath) {
-      console.error("[Changelog Parser] CHANGELOG.md not found. Tried paths:", possiblePaths);
+    if (!fs.existsSync(changelogPath)) {
+      console.error("[Changelog Parser] CHANGELOG.md not found at:", changelogPath);
       console.error("[Changelog Parser] process.cwd():", process.cwd());
-      console.error("[Changelog Parser] __dirname:", __dirname);
       return [];
     }
 

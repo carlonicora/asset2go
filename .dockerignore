@@ -55,9 +55,9 @@ tests/
 
 # Documentation
 README.md
-CHANGELOG.md
 DOCKER.md
 *.md
+!CHANGELOG.md
 docs/
 
 # Docker
