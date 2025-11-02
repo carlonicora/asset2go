@@ -67,8 +67,8 @@ WORKDIR /app
 # =============================================================================
 FROM shared-builder AS api-development
 
-# Expose port (set via build arg; defaults to 3400 for local compose)
-ARG API_PORT=3400
+# Expose port (set via build arg; defaults to 3500 for local compose)
+ARG API_PORT=3500
 EXPOSE ${API_PORT}
 
 # Development command (hot reload) - stay in /app to access tsconfig.json
@@ -105,8 +105,8 @@ RUN pnpm install --frozen-lockfile --prod --ignore-scripts
 
 WORKDIR /app/apps/api
 
-# Expose port (set via build arg; defaults to 3400 for local compose)
-ARG API_PORT=3400
+# Expose port (set via build arg; defaults to 3500 for local compose)
+ARG API_PORT=3500
 EXPOSE ${API_PORT}
 
 # Production command (can be overridden for worker mode)
@@ -117,8 +117,8 @@ CMD ["node", "dist/main", "--mode=api"]
 # =============================================================================
 FROM shared-builder AS web-development
 
-# Expose port (set via build arg; defaults to 3401 for local compose)
-ARG PORT=3401
+# Expose port (set via build arg; defaults to 3501 for local compose)
+ARG PORT=3501
 EXPOSE ${PORT}
 
 # Development command (hot reload with Turbopack) - stay in /app to access node_modules
@@ -167,8 +167,8 @@ RUN pnpm install --frozen-lockfile --prod --ignore-scripts
 
 WORKDIR /app/apps/web
 
-# Expose port (set via build arg; defaults to 3401 for local compose)
-ARG PORT=3401
+# Expose port (set via build arg; defaults to 3501 for local compose)
+ARG PORT=3501
 EXPOSE ${PORT}
 
 # Production command

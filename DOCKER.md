@@ -22,9 +22,9 @@ Complete guide for running Asset2Go with Docker Compose, including both developm
 
 The Asset2Go monorepo uses Docker Compose to run three application services:
 
-- **API** (NestJS) - Backend API server on port 3400
+- **API** (NestJS) - Backend API server on port 3500
 - **Worker** (NestJS) - Background job processor
-- **Web** (Next.js) - Frontend application on port 3401
+- **Web** (Next.js) - Frontend application on port 3501
 
 **Infrastructure Services:** Neo4j, Redis, and MinIO are expected to run **externally** and are configured via environment variables in `.env`. They are NOT included in the docker-compose.yml by default.
 
@@ -144,14 +144,14 @@ Create/edit your `.env` file in the project root with these **REQUIRED** variabl
 NODE_ENV=development             # Override per service if needed
 
 # API Configuration (REQUIRED)
-API_PORT=3400
-API_URL=http://localhost:3400/
+API_PORT=3500
+API_URL=http://asset2go.test:3500/
 
 # Web Configuration (REQUIRED)
-PORT=3401
-APP_URL=http://localhost:3401/
-NEXT_PUBLIC_API_URL=http://localhost:3400/
-NEXT_PUBLIC_ADDRESS=http://localhost:3401
+PORT=3501
+APP_URL=http://asset2go.test:3501/
+NEXT_PUBLIC_API_URL=http://asset2go.test:3500/
+NEXT_PUBLIC_ADDRESS=http://asset2go.test:3501
 
 # Database (REQUIRED)
 NEO4J_URI=bolt://localhost:7687
@@ -269,8 +269,8 @@ docker compose up api -d
 
 ### 3. Verify
 
-- API: http://localhost:3400
-- Web: http://localhost:3401
+- API: http://asset2go.test:3500
+- Web: http://asset2go.test:3501
 - Workers: Check logs with `docker compose logs worker`
 
 ## Development Mode
@@ -430,11 +430,11 @@ docker compose up
                     │   Single Server      │
                     │                      │
                     │  ┌────────────────┐  │
-Users ──────────────┼─►│  Web (3401)    │  │
+Users ──────────────┼─►│  Web (3501)    │  │
                     │  └────────┬───────┘  │
                     │           │          │
                     │  ┌────────▼───────┐  │
-                    │  │  API (3400)    │  │
+                    │  │  API (3500)    │  │
                     │  └────────┬───────┘  │
                     │           │          │
                     │  ┌────────▼───────┐  │
@@ -489,7 +489,7 @@ docker compose up -d
      │   (Backend)     │     │     │  (Frontend)    │
      │                 │     │     │                │
      │ ┌─────────────┐ │     │     │ ┌────────────┐ │
-     │ │ API (3400)  │◄┼─────┼─────┼─│ Web (3401) │ │
+     │ │ API (3500)  │◄┼─────┼─────┼─│ Web (3501) │ │
      │ └──────┬──────┘ │     │     │ └────────────┘ │
      │        │        │     │     └────────────────┘
      │ ┌──────▼──────┐ │     │
@@ -557,7 +557,7 @@ docker compose up web -d
                  │               │               │
          ┌───────▼──────┐  ┌────▼──────┐  ┌────▼──────┐
          │   Web-1      │  │  Web-2    │  │  Web-3    │
-         │  (3401)      │  │  (3401)   │  │  (3401)   │
+         │  (3501)      │  │  (3501)   │  │  (3501)   │
          └───────┬──────┘  └────┬──────┘  └────┬──────┘
                  │               │               │
                  └───────────────┼───────────────┘
@@ -570,7 +570,7 @@ docker compose up web -d
                  │               │               │
          ┌───────▼──────┐  ┌────▼──────┐  ┌────▼──────┐
          │   API-1      │  │  API-2    │  │  API-3    │
-         │  (3400)      │  │  (3400)   │  │  (3400)   │
+         │  (3500)      │  │  (3500)   │  │  (3500)   │
          └───────┬──────┘  └────┬──────┘  └────┬──────┘
                  │               │               │
                  └───────────────┼───────────────┘
@@ -776,7 +776,7 @@ REDIS_HOST=redis-cluster.internal
 S3_ENDPOINT=https://s3.amazonaws.com
 
 # API configuration
-API_PORT=3400
+API_PORT=3500
 API_URL=https://api.example.com/
 
 # Start backend services (production stages baked into image)
@@ -800,7 +800,7 @@ REDIS_HOST=redis-cluster.internal
 S3_ENDPOINT=https://s3.amazonaws.com
 
 # Web configuration
-PORT=3401
+PORT=3501
 APP_URL=https://app.example.com/
 NEXT_PUBLIC_ADDRESS=https://app.example.com
 
@@ -814,9 +814,9 @@ docker compose up --build web -d
 ```nginx
 upstream api_backend {
     least_conn;  # Send to server with fewest connections
-    server api-server-1.internal:3400;
-    server api-server-2.internal:3400;
-    server api-server-3.internal:3400;
+    server api-server-1.internal:3500;
+    server api-server-2.internal:3500;
+    server api-server-3.internal:3500;
 }
 
 server {
@@ -845,8 +845,8 @@ server {
 ```nginx
 upstream web_backend {
     # ip_hash for sticky sessions (optional - depends on your SSR needs)
-    server web-server-1.internal:3401;
-    server web-server-2.internal:3401;
+    server web-server-1.internal:3501;
+    server web-server-2.internal:3501;
 }
 
 server {
@@ -908,7 +908,7 @@ server {
 │  ┌──────────┐         ┌──────────┐         ┌──────────┐        │
 │  │   API    │◄────────│  Worker  │         │   Web    │        │
 │  │ (NestJS) │         │ (NestJS) │         │ (Next.js)│        │
-│  │ Port 3400│         │          │         │ Port 3401│        │
+│  │ Port 3500│         │          │         │ Port 3501│        │
 │  └────┬─────┘         └────┬─────┘         └────┬─────┘        │
 │       │                    │                     │              │
 │       │    Docker Network: asset2go-network   │              │
@@ -930,12 +930,12 @@ server {
 
 **Browser Request (Client-Side):**
 ```
-Browser → http://localhost:3401 → Web Container → http://localhost:3400 → API Container
+Browser → http://asset2go.test:3501 → Web Container → http://asset2go.test:3500 → API Container
 ```
 
 **Server-Side Rendering (SSR):**
 ```
-Web Container → http://api:3400 (internal Docker network) → API Container
+Web Container → http://api:3500 (internal Docker network) → API Container
 ```
 
 ## Docker Build Architecture
@@ -1047,7 +1047,7 @@ All services have health checks configured to ensure proper orchestration:
 **API Service:**
 ```yaml
 healthcheck:
-  test: ["CMD", "node", "-e", "require('http').get({host:'localhost',port:process.env.API_PORT||3400,path:'/version'},(r)=>process.exit(r.statusCode>=200&&r.statusCode<500?0:1))"]
+  test: ["CMD", "node", "-e", "require('http').get({host:'localhost',port:process.env.API_PORT||3500,path:'/version'},(r)=>process.exit(r.statusCode>=200&&r.statusCode<500?0:1))"]
   interval: 10s
   timeout: 5s
   retries: 3
@@ -1057,7 +1057,7 @@ healthcheck:
 **Web Service:**
 ```yaml
 healthcheck:
-  test: ["CMD", "node", "-e", "require('http').get({host:'localhost',port:process.env.PORT||3401,path:'/'},(r)=>process.exit(r.statusCode>=200&&r.statusCode<500?0:1))"]
+  test: ["CMD", "node", "-e", "require('http').get({host:'localhost',port:process.env.PORT||3501,path:'/'},(r)=>process.exit(r.statusCode>=200&&r.statusCode<500?0:1))"]
   interval: 10s
   timeout: 5s
   retries: 3
@@ -1127,8 +1127,8 @@ The configuration uses different URLs for client-side vs server-side requests:
 
 ```bash
 # In .env
-NEXT_PUBLIC_API_URL=http://localhost:3400/   # Used by browser
-API_INTERNAL_URL=http://api:3400/            # Used by SSR (defaults to this)
+NEXT_PUBLIC_API_URL=http://asset2go.test:3500/   # Used by browser
+API_INTERNAL_URL=http://api:3500/            # Used by SSR (defaults to this)
 ```
 
 **How It Works:**
@@ -1140,19 +1140,19 @@ API_INTERNAL_URL=http://api:3400/            # Used by SSR (defaults to this)
 
 **When services run on the SAME server (single docker-compose):**
 ```bash
-API_INTERNAL_URL=http://api:3400/  # Docker service name works
+API_INTERNAL_URL=http://api:3500/  # Docker service name works
 ```
 The web container can reach the API container via Docker's internal network using the service name.
 
 **When services run on DIFFERENT servers (distributed):**
 ```bash
 # WRONG - This will NOT work:
-API_INTERNAL_URL=http://api:3400/  # Docker service name doesn't exist across servers
+API_INTERNAL_URL=http://api:3500/  # Docker service name doesn't exist across servers
 
 # CORRECT - Use external URL:
 API_INTERNAL_URL=https://api.example.com/  # Actual API server URL
 # OR
-API_INTERNAL_URL=http://10.0.1.50:3400/    # Internal IP address
+API_INTERNAL_URL=http://10.0.1.50:3500/    # Internal IP address
 ```
 
 **Why This Matters:**
@@ -1171,10 +1171,10 @@ docker compose exec web wget -O- --timeout=5 $API_INTERNAL_URL
 ```
 
 **Common Mistakes:**
-- ❌ Using `http://localhost:3400/` - wrong, localhost is the web container
-- ❌ Using `http://api:3400/` when services are on different servers
+- ❌ Using `http://asset2go.test:3500/` - wrong, localhost is the web container
+- ❌ Using `http://api:3500/` when services are on different servers
 - ✅ Using `https://api.example.com/` - correct for distributed
-- ✅ Using `http://10.0.1.50:3400/` - correct for same network, different servers
+- ✅ Using `http://10.0.1.50:3500/` - correct for same network, different servers
 
 **If you get 500 errors or timeouts on page load:**
 1. Verify `API_INTERNAL_URL` is correctly configured for your deployment
@@ -1224,17 +1224,17 @@ NODE_ENV=development             # Set to match the environment (development/pro
 # =============================================================================
 # API CONFIGURATION (REQUIRED)
 # =============================================================================
-API_PORT=3400                    # REQUIRED: Port for API server
-API_URL=http://localhost:3400/   # REQUIRED: External API URL
+API_PORT=3500                    # REQUIRED: Port for API server
+API_URL=http://asset2go.test:3500/   # REQUIRED: External API URL
 API_NODE_OPTIONS=--max-old-space-size=6144     # OPTIONAL: Extra Node.js flags for the API container
 
 # =============================================================================
 # WEB CONFIGURATION (REQUIRED)
 # =============================================================================
-PORT=3401                                   # REQUIRED: Port for web server
-APP_URL=http://localhost:3401/              # REQUIRED: External web URL
-NEXT_PUBLIC_API_URL=http://localhost:3400/  # REQUIRED: API URL for browser
-NEXT_PUBLIC_ADDRESS=http://localhost:3401   # REQUIRED: Web address for browser
+PORT=3501                                   # REQUIRED: Port for web server
+APP_URL=http://asset2go.test:3501/              # REQUIRED: External web URL
+NEXT_PUBLIC_API_URL=http://asset2go.test:3500/  # REQUIRED: API URL for browser
+NEXT_PUBLIC_ADDRESS=http://asset2go.test:3501   # REQUIRED: Web address for browser
 WEB_NODE_OPTIONS=--max-old-space-size=4096  # OPTIONAL: Extra Node.js flags for the web container
 
 # =============================================================================
@@ -1246,11 +1246,11 @@ WORKER_NODE_OPTIONS=--max-old-space-size=6144 # OPTIONAL: Extra Node.js flags fo
 # DOCKER INTERNAL NETWORKING (CRITICAL FOR MULTI-SERVER)
 # =============================================================================
 # SINGLE SERVER: Use Docker service name (default)
-API_INTERNAL_URL=http://api:3400/  # Works when all services on same docker-compose
+API_INTERNAL_URL=http://api:3500/  # Works when all services on same docker-compose
 
 # MULTI-SERVER: MUST use external URL or IP
 # API_INTERNAL_URL=https://api.example.com/       # Use actual domain
-# API_INTERNAL_URL=http://10.0.1.50:3400/         # Or internal IP
+# API_INTERNAL_URL=http://10.0.1.50:3500/         # Or internal IP
 #
 # ⚠️  CRITICAL: If Web and API are on different servers, you MUST set this
 #     to the actual API server URL, NOT the Docker service name!
@@ -1299,7 +1299,7 @@ NEXT_PUBLIC_VAPID_PUBLIC_KEY=your-public-key  # REQUIRED: Public key for browser
 # =============================================================================
 # CORS CONFIGURATION (OPTIONAL)
 # =============================================================================
-CORS_ORIGINS=http://localhost:3401  # OPTIONAL: Allowed CORS origins
+CORS_ORIGINS=http://asset2go.test:3501  # OPTIONAL: Allowed CORS origins
 
 # =============================================================================
 # EMAIL CONFIGURATION (OPTIONAL)
@@ -1332,7 +1332,7 @@ RATE_LIMIT_REQUESTS=100          # OPTIONAL: Max requests per window
 Docker Compose resolves variables in this order:
 1. Environment variables set in shell
 2. `.env` file in project root
-3. Default values in docker-compose.yml (e.g., `${API_PORT:-3400}`)
+3. Default values in docker-compose.yml (e.g., `${API_PORT:-3500}`)
 
 ### Verifying Environment Variables
 
@@ -1360,12 +1360,12 @@ docker compose exec api printenv | grep NEO4J
 1. Verify `API_INTERNAL_URL` environment variable:
    ```bash
    docker compose exec web printenv | grep API_INTERNAL_URL
-   # Should show: API_INTERNAL_URL=http://api:3400/
+   # Should show: API_INTERNAL_URL=http://api:3500/
    ```
 
 2. Test connectivity:
    ```bash
-   docker compose exec web wget -O- http://api:3400
+   docker compose exec web wget -O- http://api:3500
    # Should return API response, not timeout
    ```
 
@@ -1462,20 +1462,20 @@ docker compose logs api
 
 **Symptoms:**
 ```
-Error starting userland proxy: listen tcp 0.0.0.0:3400: bind: address already in use
+Error starting userland proxy: listen tcp 0.0.0.0:3500: bind: address already in use
 ```
 
 **Solution:**
 ```bash
 # Find process using port (macOS/Linux)
-lsof -i :3400
+lsof -i :3500
 
 # Find process using port (Windows)
-netstat -ano | findstr :3400
+netstat -ano | findstr :3500
 
 # Either kill the process or change port in .env:
-PORT=3402  # for web
-API_PORT=3402  # for api
+PORT=3502  # for web
+API_PORT=3502  # for api
 ```
 
 ### Issue: Out of Disk Space
@@ -1568,7 +1568,7 @@ docker network inspect asset2go_asset2go-network
 
 # Test connectivity between services
 docker compose exec web ping api
-docker compose exec web wget -O- http://api:3400
+docker compose exec web wget -O- http://api:3500
 ```
 
 ### Cleaning Up

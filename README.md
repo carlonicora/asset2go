@@ -95,9 +95,9 @@ docker compose up --build
 
 The default compose file now builds the `production` stages of every service so each container runs with the dependencies baked into its image. The stack exposes:
 
-- API server on http://localhost:3400
+- API server on http://asset2go.test:3500
 - Background worker sharing the API image
-- Web application on http://localhost:3401
+- Web application on http://asset2go.test:3501
 
 **Development stack inside Docker:**
 
@@ -229,8 +229,8 @@ docker build -f apps/web/Dockerfile --target production -t asset2go-web .
 Run production containers:
 
 ```bash
-docker run -p 3400:3400 asset2go-api
-docker run -p 3401:3401 asset2go-web
+docker run -p 3500:3500 asset2go-api
+docker run -p 3501:3501 asset2go-web
 ```
 
 ## 🧪 Testing
