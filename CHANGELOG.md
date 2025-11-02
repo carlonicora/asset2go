@@ -1,3 +1,13 @@
+## [1.9.0](https://github.com/carlonicora/asset2go/compare/v1.8.6...v1.9.0) (2025-11-02)
+
+### 🚀 Features
+
+* add changelog ([71cccc0](https://github.com/carlonicora/asset2go/commit/71cccc0bb162b05a1cff8123adb015f40618ca43))
+
+### ♻️ Chores
+
+* update pnpm version ([7598612](https://github.com/carlonicora/asset2go/commit/7598612a5b0e57d57eeae3fe21a6874102c1f431))
+
 ## [1.8.6](https://github.com/carlonicora/asset2go/compare/v1.8.5...v1.8.6) (2025-11-02)
 
 ### ♻️ Chores
