@@ -22,64 +22,105 @@ export interface ChangelogVersion {
 }
 
 /**
+ * Find CHANGELOG.md by trying multiple possible paths
+ */
+function findChangelogPath(): string | null {
+  const possiblePaths = [
+    // From apps/web in monorepo
+    path.join(process.cwd(), "../../CHANGELOG.md"),
+    // From apps/web if cwd is monorepo root
+    path.join(process.cwd(), "CHANGELOG.md"),
+    // From production build
+    path.join(process.cwd(), "../..", "CHANGELOG.md"),
+  ];
+
+  for (const filePath of possiblePaths) {
+    if (fs.existsSync(filePath)) {
+      return filePath;
+    }
+  }
+
+  return null;
+}
+
+/**
  * Parse CHANGELOG.md following conventional-changelog format
  * Supports emoji categories: 🚀 Features, 🐛 Bug Fixes, ♻️ Chores, etc.
  */
 export async function parseChangelog(): Promise<ChangelogVersion[]> {
-  const changelogPath = path.join(process.cwd(), "../../CHANGELOG.md");
-  const content = fs.readFileSync(changelogPath, "utf-8");
+  try {
+    const changelogPath = findChangelogPath();
 
-  const versions: ChangelogVersion[] = [];
-  const lines = content.split("\n");
+    if (!changelogPath) {
+      console.error(
+        "[Changelog Parser] CHANGELOG.md not found. Tried paths:",
+        [
+          path.join(process.cwd(), "../../CHANGELOG.md"),
+          path.join(process.cwd(), "CHANGELOG.md"),
+          path.join(process.cwd(), "../..", "CHANGELOG.md"),
+        ]
+      );
+      return [];
+    }
 
-  let currentVersion: ChangelogVersion | null = null;
-  let currentCategory: keyof ChangelogVersion["categories"] | null = null;
+    const content = fs.readFileSync(changelogPath, "utf-8");
 
-  for (const line of lines) {
-    // Parse version header: ## [1.8.6](https://github.com/...) (2025-11-02)
-    const versionMatch = line.match(/^## \[(.+?)\]\((.+?)\) \((.+?)\)/);
-    if (versionMatch) {
-      if (currentVersion) {
-        versions.push(currentVersion);
+    const versions: ChangelogVersion[] = [];
+    const lines = content.split("\n");
+
+    let currentVersion: ChangelogVersion | null = null;
+    let currentCategory: keyof ChangelogVersion["categories"] | null = null;
+
+    for (const line of lines) {
+      // Parse version header: ## [1.8.6](https://github.com/...) (2025-11-02)
+      const versionMatch = line.match(/^## \[(.+?)\]\((.+?)\) \((.+?)\)/);
+      if (versionMatch) {
+        if (currentVersion) {
+          versions.push(currentVersion);
+        }
+        currentVersion = {
+          version: versionMatch[1],
+          date: versionMatch[3],
+          compareUrl: versionMatch[2],
+          categories: {},
+        };
+        currentCategory = null;
+        continue;
       }
-      currentVersion = {
-        version: versionMatch[1],
-        date: versionMatch[3],
-        compareUrl: versionMatch[2],
-        categories: {},
-      };
-      currentCategory = null;
-      continue;
-    }
 
-    // Parse category: ### 🚀 Features
-    const categoryMatch = line.match(/^### (.+?) (.+)/);
-    if (categoryMatch && currentVersion) {
-      const categoryName = categoryMatch[2].trim();
-      currentCategory = mapCategoryNameToKey(categoryName);
-      if (currentCategory && !currentVersion.categories[currentCategory]) {
-        currentVersion.categories[currentCategory] = [];
+      // Parse category: ### 🚀 Features
+      const categoryMatch = line.match(/^### (.+?) (.+)/);
+      if (categoryMatch && currentVersion) {
+        const categoryName = categoryMatch[2].trim();
+        currentCategory = mapCategoryNameToKey(categoryName);
+        if (currentCategory && !currentVersion.categories[currentCategory]) {
+          currentVersion.categories[currentCategory] = [];
+        }
+        continue;
       }
-      continue;
+
+      // Parse commit entry: * description ([hash](url))
+      const commitMatch = line.match(/^\* (.+) \(\[([a-f0-9]+)\]\((.+?)\)\)/);
+      if (commitMatch && currentVersion && currentCategory) {
+        currentVersion.categories[currentCategory]?.push({
+          message: commitMatch[1],
+          commitHash: commitMatch[2],
+          commitUrl: commitMatch[3],
+        });
+      }
     }
 
-    // Parse commit entry: * description ([hash](url))
-    const commitMatch = line.match(/^\* (.+) \(\[([a-f0-9]+)\]\((.+?)\)\)/);
-    if (commitMatch && currentVersion && currentCategory) {
-      currentVersion.categories[currentCategory]?.push({
-        message: commitMatch[1],
-        commitHash: commitMatch[2],
-        commitUrl: commitMatch[3],
-      });
+    // Push last version
+    if (currentVersion) {
+      versions.push(currentVersion);
     }
-  }
 
-  // Push last version
-  if (currentVersion) {
-    versions.push(currentVersion);
+    return versions;
+  } catch (error) {
+    console.error("[Changelog Parser] Error parsing CHANGELOG.md:", error);
+    console.error("[Changelog Parser] Working directory:", process.cwd());
+    return [];
   }
-
-  return versions;
 }
 
 /**
