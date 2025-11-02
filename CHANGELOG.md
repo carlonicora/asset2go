@@ -1,3 +1,9 @@
+## [1.8.6](https://github.com/carlonicora/asset2go/compare/v1.8.5...v1.8.6) (2025-11-02)
+
+### ♻️ Chores
+
+* update turbo ([1e2d706](https://github.com/carlonicora/asset2go/commit/1e2d706fd10f784c6285e217c8751fc2673497b9))
+
 ## [1.8.5](https://github.com/carlonicora/asset2go/compare/v1.8.4...v1.8.5) (2025-11-02)
 
 ### 🐛 Bug Fixes
