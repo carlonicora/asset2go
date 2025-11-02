@@ -49,6 +49,13 @@ pnpm format           # Format all code with Prettier
 pnpm typecheck        # Type check all packages
 ```
 
+### Dependency Management
+```bash
+pnpm outdated         # Check for outdated packages across workspaces
+pnpm audit            # Run security audit (moderate+ severity)
+pnpm deps:check       # List installed dependencies per workspace
+```
+
 ### Docker
 ```bash
 # Production build (default)
@@ -211,6 +218,112 @@ Contains:
 - `REDIS_HOST`, `REDIS_PORT`: Redis connection
 - `JWT_SECRET`: JWT signing secret
 - `NODE_ENV`: Environment mode
+
+## Dependency Management
+
+### Package Manager
+
+This monorepo uses **pnpm** (v10.20.0+) with workspaces for efficient dependency management.
+
+**Engine Requirements** (all packages):
+- Node.js: `>=22.0.0`
+- pnpm: `>=10.0.0`
+
+### Workspace Structure
+
+```
+root/                           # Monorepo root
+├── apps/api/                  # NestJS backend
+├── apps/web/                  # Next.js frontend
+└── packages/shared/           # Shared utilities & types
+```
+
+### Dependency Hoisting Strategy
+
+**Common dev dependencies are hoisted to root** to ensure consistency and reduce duplication:
+- TypeScript tooling (`typescript`, `@types/node`)
+- Linting & formatting (`eslint`, `prettier`, `@typescript-eslint/*`)
+- Semantic release packages (`@semantic-release/*`)
+
+**Workspace-specific dependencies remain local**:
+- API: NestJS, Neo4j, BullMQ, etc.
+- Web: Next.js, React, Radix UI, etc.
+- Shared: Build tools (tsup)
+
+### Version Pinning & Overrides
+
+**pnpm overrides** in root `package.json` enforce version consistency:
+
+```json
+"pnpm": {
+  "overrides": {
+    "zod": "4.1.12",              // Zod v4 for validation schemas
+    "@hookform/resolvers": "5.2.2" // Form resolver compatibility
+  }
+}
+```
+
+**Why these overrides:**
+- `zod`: Ensures all workspaces use Zod v4 (latest stable, released July 2025)
+- `@types/react` / `@types/react-dom`: Enforces React 19.2.2 types for consistency across web workspace
+
+### Helpful Scripts
+
+```bash
+# Dependency maintenance
+pnpm outdated           # Check for outdated packages across all workspaces
+pnpm audit              # Security audit (moderate+ severity)
+pnpm deps:check         # List installed dependencies per workspace
+
+# Installation
+pnpm install            # Install all dependencies (respects overrides)
+```
+
+### Version Strategy
+
+- **Root & workspaces**: Use `^` (caret) ranges for flexibility (e.g., `"^5.9.3"`)
+- **Overrides**: Use exact versions for critical packages (e.g., `"4.1.12"`)
+- **React ecosystem**: Overrides enforce React 19.2.2 types in web package
+- **Pino constraint**: API uses pino v9 (not v10) due to `nestjs-pino@4.4.1` peer dependency limitation
+
+### Adding Dependencies
+
+**Root dependencies** (only if used by multiple workspaces or monorepo tooling):
+```bash
+pnpm add -w <package>           # Add to root
+pnpm add -wD <package>          # Add to root devDependencies
+```
+
+**Workspace dependencies**:
+```bash
+pnpm --filter=asset2go-api add <package>      # Add to API
+pnpm --filter=asset2go-web add <package>      # Add to Web
+pnpm --filter=@asset2go/shared add <package>  # Add to Shared
+```
+
+**After adding dependencies**:
+1. If adding to `packages/shared`, run `pnpm build` in shared package
+2. Run `pnpm install` at root to update lockfile
+3. Verify no conflicts with `pnpm deps:check`
+
+### Troubleshooting Dependencies
+
+**Phantom modules (module not found but installed)**:
+```bash
+pnpm clean:all          # Nuclear option: clean everything
+pnpm install            # Reinstall from scratch
+```
+
+**Version conflicts**:
+```bash
+pnpm why <package>      # Show why a package is installed
+pnpm outdated -r        # Check for version mismatches
+```
+
+**Hoisting issues**:
+- Check if package should be in root devDependencies
+- Verify workspace has correct filter in root scripts
+- Ensure `pnpm-workspace.yaml` is correctly configured (if exists)
 
 ## Docker Architecture
 

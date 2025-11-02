@@ -1,25 +1,21 @@
-import { FlatCompat } from "@eslint/eslintrc";
 import js from "@eslint/js";
 import typescriptEslintEslintPlugin from "@typescript-eslint/eslint-plugin";
 import tsParser from "@typescript-eslint/parser";
+import prettierConfig from "eslint-config-prettier";
 import globals from "globals";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-  recommendedConfig: js.configs.recommended,
-  allConfig: js.configs.all,
-});
 
 export default [
   {
     ignores: ["**/eslint.config.mjs", "dist/**/*"],
   },
-  ...compat.extends("plugin:@typescript-eslint/recommended", "plugin:prettier/recommended"),
+  js.configs.recommended,
   {
+    files: ["**/*.ts"],
     plugins: {
       "@typescript-eslint": typescriptEslintEslintPlugin,
     },
@@ -41,12 +37,15 @@ export default [
     },
 
     rules: {
+      ...typescriptEslintEslintPlugin.configs.recommended.rules,
       "@typescript-eslint/interface-name-prefix": "off",
       "@typescript-eslint/explicit-function-return-type": "off",
       "@typescript-eslint/explicit-module-boundary-types": "off",
       "@typescript-eslint/no-explicit-any": "off",
       "@typescript-eslint/no-var-requires": "off",
       "@typescript-eslint/no-require-imports": "off",
+      "@typescript-eslint/no-unused-expressions": "off", // Disabled due to ESLint 8/9 compatibility issue
     },
   },
+  prettierConfig,
 ];

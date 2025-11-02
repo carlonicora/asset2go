@@ -66,7 +66,9 @@ async function bootstrapAPI(modeConfig: AppModeConfig): Promise<void> {
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule.forRoot(modeConfig),
     new FastifyAdapter({
-      ignoreTrailingSlash: true,
+      routerOptions: {
+        ignoreTrailingSlash: true,
+      },
       bodyLimit: 100 * 1024 * 1024,
     }),
     {

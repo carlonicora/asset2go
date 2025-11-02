@@ -297,10 +297,11 @@ export class BlockNoteService {
           case "numberedListItem":
           case "checkListItem":
             return `• ${this.processContent(node.content || []).trim()}`;
-          case "codeBlock":
+          case "codeBlock": {
             const language = node.props?.language || "";
             const codeContent = this.processContent(node.content || []);
             return `\`\`\`${language}\n${codeContent}\n\`\`\``;
+          }
           default:
             return this.processContent(node.content || []).trim();
         }

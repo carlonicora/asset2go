@@ -27,17 +27,21 @@
     "clean": "turbo run clean && rm -rf node_modules .turbo",
     "clean:all": "pnpm clean && pnpm -r exec rm -rf node_modules dist .next .turbo",
     "structure": "bash scripts/import-structure.sh",
+    "outdated": "pnpm outdated -r",
+    "audit": "pnpm audit --audit-level=moderate",
+    "deps:check": "pnpm list --recursive --depth=0",
     "prepare": "husky install",
     "preinstall": "npx only-allow pnpm"
   },
   "dependencies": {
-    "dotenv-cli": "^10.0.0",
-    "zod": "4.0.17"
+    "dotenv-cli": "^11.0.0"
   },
   "pnpm": {
     "overrides": {
-      "zod": "4.0.17",
-      "@hookform/resolvers": "5.2.2"
+      "zod": "4.1.12",
+      "@types/react": "19.2.2",
+      "@types/react-dom": "19.2.2",
+      "eslint": "9.39.0"
     }
   },
   "devDependencies": {
@@ -46,11 +50,11 @@
     "@semantic-release/git": "^10.0.1",
     "@semantic-release/npm": "^13.1.1",
     "@semantic-release/release-notes-generator": "^14.1.0",
-    "@types/node": "^24.9.1",
+    "@types/node": "^24.9.2",
     "@typescript-eslint/eslint-plugin": "^8.46.2",
     "@typescript-eslint/parser": "^8.46.2",
     "conventional-changelog-conventionalcommits": "^9.1.0",
-    "eslint": "^9.38.0",
+    "eslint": "^9.39.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.4",
     "husky": "^9.1.7",

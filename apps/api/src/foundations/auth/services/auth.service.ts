@@ -76,7 +76,7 @@ export class AuthService {
 
     await this.repository.setLastLogin({ userId: auth.user.id });
 
-    if (!!params.refreshToken) auth.user = undefined;
+    if (params.refreshToken) auth.user = undefined;
 
     return auth;
   }

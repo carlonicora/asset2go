@@ -285,14 +285,10 @@ export class JsonApiService {
       if (relationship?.dynamicFactory) {
         const serialisedResults = await Promise.all(
           data.map(async (item: T) => {
-            try {
-              const dynamicSerializer = relationship.dynamicFactory.createDynamicRelationship(item);
-              const dynamicBuilder = dynamicSerializer ? await dynamicSerializer.create() : null;
-              const actualBuilder = dynamicBuilder || builder;
-              return this.serialiseData(item, actualBuilder, paginator);
-            } catch (error) {
-              throw error;
-            }
+            const dynamicSerializer = relationship.dynamicFactory.createDynamicRelationship(item);
+            const dynamicBuilder = dynamicSerializer ? await dynamicSerializer.create() : null;
+            const actualBuilder = dynamicBuilder || builder;
+            return this.serialiseData(item, actualBuilder, paginator);
           }),
         );
 

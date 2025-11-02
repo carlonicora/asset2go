@@ -38,7 +38,7 @@ export class CypherService {
   getFilter(params: { filters: { param?: any; filter: string }[] }): string {
     const filters: string[] = [];
     params.filters.forEach((filter) => {
-      if (!!filter.param) filters.push(filter.filter.startsWith(" ") ? filter.filter : ` ${filter.filter}`);
+      if (filter.param) filters.push(filter.filter.startsWith(" ") ? filter.filter : ` ${filter.filter}`);
     });
     return filters.length > 0 ? `WHERE ${filters.join(" AND ")}` : "";
   }

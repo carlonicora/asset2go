@@ -5,6 +5,7 @@ import { JsonApiService } from "src/core/jsonapi/services/jsonapi.service";
 import { auditModel } from "src/foundations/audit/entities/audit.model";
 import { AuditRepository } from "src/foundations/audit/repositories/audit.repository";
 
+const skipAuditLog = true;
 @Injectable()
 export class AuditService {
   constructor(
@@ -15,7 +16,7 @@ export class AuditService {
 
   async createAuditEntry(params: { entityType: string; entityId: string }): Promise<void> {
     //TODO: Enable audit logs
-    if (true === true) return; // Audit log disabled for now
+    if (skipAuditLog === true) return; // Audit log disabled for now
 
     const userId = this.clsService.get("userId");
     if (!userId) return;

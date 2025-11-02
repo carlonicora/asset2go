@@ -83,7 +83,7 @@ export class S3Service {
           forcePathStyle: true,
         });
         break;
-      case "azure":
+      case "azure": {
         this._bucket = this.config.get<ConfigS3Interface>("s3").bucket;
         const connectionString = this.config.get<ConfigS3Interface>("s3").key;
 
@@ -113,6 +113,7 @@ export class S3Service {
 
         this.containerClient = this.blobServiceClient.getContainerClient(this._bucket);
         break;
+      }
     }
   }
 
