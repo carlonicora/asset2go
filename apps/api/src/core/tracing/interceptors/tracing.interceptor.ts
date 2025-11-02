@@ -1,11 +1,23 @@
 import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { catchError, Observable, tap, throwError } from "rxjs";
+import { ConfigTempoInterface } from "src/common/config/interfaces/config.tempo.interface";
 import { TracingService } from "../services/tracing.service";
 
 @Injectable()
 export class TracingInterceptor implements NestInterceptor {
-  constructor(private readonly tracingService: TracingService) {}
+  private readonly serviceName: string;
+  private readonly serviceVersion: string;
+
+  constructor(
+    private readonly tracingService: TracingService,
+    private readonly configService: ConfigService,
+  ) {
+    const tempoConfig = this.configService.get<ConfigTempoInterface>("tempo");
+    this.serviceName = tempoConfig?.serviceName || "asset2go-api";
+    this.serviceVersion = tempoConfig?.serviceVersion || "1.0.0";
+  }
 
   intercept(context: ExecutionContext, next: CallHandler<any>): Observable<any> {
     if (!this.tracingService.isTracingEnabled()) {
@@ -36,7 +48,8 @@ export class TracingInterceptor implements NestInterceptor {
       "operation.name": `${request.method} ${request.url}`, // Explicit operation name
       component: "nestjs-http",
       "span.kind": "server",
-      "service.name": "phlow-api", // Explicit service name
+      "service.name": this.serviceName,
+      "service.version": this.serviceVersion,
     });
 
     // Add forwarded headers if present
