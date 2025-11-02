@@ -23,6 +23,7 @@ const eslintConfig = [
       "react-hooks/static-components": "off",
       "react-hooks/immutability": "off",
       "react-hooks/use-memo": "off",
+      "@next/next/no-img-element": "off",
     },
   },
   {
