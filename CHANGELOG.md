@@ -1,3 +1,15 @@
+## [1.8.3](https://github.com/carlonicora/asset2go/compare/v1.8.2...v1.8.3) (2025-11-02)
+
+### 🐛 Bug Fixes
+
+* correct eslint config ([2b64187](https://github.com/carlonicora/asset2go/commit/2b641874ae4c266fc35e08bfeb3c66ac80e88d93))
+* update ESLint configuration and scripts for consistency ([dfeae59](https://github.com/carlonicora/asset2go/commit/dfeae5951508fed857ae36680b942552a1149fbf))
+
+### ♻️ Chores
+
+* save work in progress before Next.js 16 upgrade ([5fc928b](https://github.com/carlonicora/asset2go/commit/5fc928b960afdb4084a072e870a7539e5ae78035))
+* upgrade Next.js from 15.5.4 to 16.0.1 ([35818f9](https://github.com/carlonicora/asset2go/commit/35818f9f079dd489f82c0272f3b4a0140840ad10))
+
 ## [1.8.2](https://github.com/carlonicora/asset2go/compare/v1.8.1...v1.8.2) (2025-10-24)
 
 ### 🐛 Bug Fixes
