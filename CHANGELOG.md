@@ -1,3 +1,10 @@
+## [1.8.5](https://github.com/carlonicora/asset2go/compare/v1.8.4...v1.8.5) (2025-11-02)
+
+### 🐛 Bug Fixes
+
+* correct app name in version display ([432617d](https://github.com/carlonicora/asset2go/commit/432617d0ff221f8b9638b659e4d0e97b2aac7c1f))
+* correct config in tracing interceptor ([9fddb60](https://github.com/carlonicora/asset2go/commit/9fddb60c3ced811562771a816ebcf2ad445b74d4))
+
 ## [1.8.4](https://github.com/carlonicora/asset2go/compare/v1.8.3...v1.8.4) (2025-11-02)
 
 ### 🐛 Bug Fixes
