@@ -22,44 +22,30 @@ export interface ChangelogVersion {
 }
 
 /**
- * Find CHANGELOG.md by trying multiple possible paths
- */
-function findChangelogPath(): string | null {
-  const possiblePaths = [
-    // From apps/web in monorepo
-    path.join(process.cwd(), "../../CHANGELOG.md"),
-    // From apps/web if cwd is monorepo root
-    path.join(process.cwd(), "CHANGELOG.md"),
-    // From production build
-    path.join(process.cwd(), "../..", "CHANGELOG.md"),
-  ];
-
-  for (const filePath of possiblePaths) {
-    if (fs.existsSync(filePath)) {
-      return filePath;
-    }
-  }
-
-  return null;
-}
-
-/**
  * Parse CHANGELOG.md following conventional-changelog format
  * Supports emoji categories: 🚀 Features, 🐛 Bug Fixes, ♻️ Chores, etc.
  */
 export async function parseChangelog(): Promise<ChangelogVersion[]> {
   try {
-    const changelogPath = findChangelogPath();
+    // Try multiple possible paths to find CHANGELOG.md
+    const possiblePaths = [
+      path.join(process.cwd(), "../../CHANGELOG.md"), // If cwd is apps/web
+      path.join(process.cwd(), "CHANGELOG.md"),       // If cwd is monorepo root
+      path.join(__dirname, "../../../../CHANGELOG.md"), // Relative to this file (dev mode)
+    ];
+
+    let changelogPath: string | null = null;
+    for (const testPath of possiblePaths) {
+      if (fs.existsSync(testPath)) {
+        changelogPath = testPath;
+        break;
+      }
+    }
 
     if (!changelogPath) {
-      console.error(
-        "[Changelog Parser] CHANGELOG.md not found. Tried paths:",
-        [
-          path.join(process.cwd(), "../../CHANGELOG.md"),
-          path.join(process.cwd(), "CHANGELOG.md"),
-          path.join(process.cwd(), "../..", "CHANGELOG.md"),
-        ]
-      );
+      console.error("[Changelog Parser] CHANGELOG.md not found. Tried paths:", possiblePaths);
+      console.error("[Changelog Parser] process.cwd():", process.cwd());
+      console.error("[Changelog Parser] __dirname:", __dirname);
       return [];
     }
 
@@ -118,7 +104,6 @@ export async function parseChangelog(): Promise<ChangelogVersion[]> {
     return versions;
   } catch (error) {
     console.error("[Changelog Parser] Error parsing CHANGELOG.md:", error);
-    console.error("[Changelog Parser] Working directory:", process.cwd());
     return [];
   }
 }
