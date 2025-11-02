@@ -1,3 +1,9 @@
+## [1.8.4](https://github.com/carlonicora/asset2go/compare/v1.8.3...v1.8.4) (2025-11-02)
+
+### 🐛 Bug Fixes
+
+* correct default ports ([2b29786](https://github.com/carlonicora/asset2go/commit/2b2978635f7b51db6c6f3e6a80b4d65561456d18))
+
 ## [1.8.3](https://github.com/carlonicora/asset2go/compare/v1.8.2...v1.8.3) (2025-11-02)
 
 ### 🐛 Bug Fixes
