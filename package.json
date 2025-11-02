@@ -1,6 +1,6 @@
 {
   "name": "asset2go-monorepo",
-  "version": "1.9.1",
+  "version": "1.9.2",
   "private": true,
   "description": "Asset2Go - Legal Practice Management Platform Monorepo",
   "engines": {

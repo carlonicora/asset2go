@@ -1,3 +1,9 @@
+## [1.9.2](https://github.com/carlonicora/asset2go/compare/v1.9.1...v1.9.2) (2025-11-02)
+
+### 🐛 Bug Fixes
+
+* correct changelog in production ([9f5d64e](https://github.com/carlonicora/asset2go/commit/9f5d64ee2b11cee5a4b79c6500dd6d3a261a1436))
+
 ## [1.9.1](https://github.com/carlonicora/asset2go/compare/v1.9.0...v1.9.1) (2025-11-02)
 
 ### 🐛 Bug Fixes
