@@ -87,7 +87,7 @@ export class TracingInterceptor implements NestInterceptor {
             const resultSize = JSON.stringify(result).length;
             this.tracingService.addSpanAttribute("http.response_size_bytes", resultSize);
           } catch (error) {
-            console.log("Failed to calculate response size for tracing span", error);
+            console.warn("Failed to calculate response size for tracing span", error);
             // Ignore JSON serialization errors
           }
         }
