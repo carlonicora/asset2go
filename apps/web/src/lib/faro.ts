@@ -13,14 +13,14 @@ export function initFaro() {
     return faroInstance;
   }
 
+  const faroEnabled = process.env.NEXT_PUBLIC_FARO_ENABLED === "true";
   const faroUrl = process.env.NEXT_PUBLIC_FARO_URL;
   const appName = process.env.NEXT_PUBLIC_FARO_APP_NAME || "asset2go-web";
   const appVersion = process.env.NEXT_PUBLIC_APP_VERSION || "1.0.0";
   const environment = process.env.NEXT_PUBLIC_ENVIRONMENT || process.env.NODE_ENV || "development";
 
-  // Only initialize if Faro URL is configured
-  if (!faroUrl) {
-    console.warn("Faro URL not configured. Skipping Faro initialization.");
+  // Only initialize if Faro is enabled and URL is configured
+  if (!faroEnabled || !faroUrl) {
     return null;
   }
 

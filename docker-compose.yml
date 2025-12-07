@@ -204,6 +204,8 @@ services:
   # Accessible at http://faro-collector:12345/collect
   # ---------------------------------------------------------------------------
   faro-collector:
+    profiles:
+      - observability
     image: grafana/faro-collector:latest
     ports:
       - "12345:12345"
