@@ -11,7 +11,9 @@ export const ENV = {
   // Use internal Docker API URL for SSR, fall back to public URL for non-Docker or client-side
   API_URL:
     (typeof window === "undefined" ? process.env.API_INTERNAL_URL : undefined) || process.env.NEXT_PUBLIC_API_URL!,
-  APP_URL: process.env.NEXT_PUBLIC_ADDRESS!,
+  APP_URL: process.env.NEXT_PUBLIC_ADDRESS
+    ? process.env.NEXT_PUBLIC_ADDRESS.trim().replace(/\/+$/, "") // Trim whitespace & remove trailing slashes
+    : "",
   VAPID_PUBLIC_KEY: process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!,
 } as const;
 

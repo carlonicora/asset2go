@@ -2,6 +2,7 @@ import { CurrentUserProvider } from "@/features/foundations/user/contexts/Curren
 import { Provider } from "jotai";
 import "react-horizontal-scrolling-menu/dist/styles.css";
 
+import { FaroProvider } from "@/components/providers/FaroProvider";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { routing } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
@@ -30,16 +31,18 @@ export default async function RootLayout(props: { children: React.ReactNode; par
   return (
     <html suppressHydrationWarning lang={locale}>
       <body className={cn("bg-background !top-0 min-h-screen font-sans antialiased", fontSans.variable)}>
-        <Provider>
-          <NextIntlClientProvider messages={messages}>
-            <CurrentUserProvider>
-              <TooltipProvider>
-                <Toaster closeButton richColors />
-                {children}
-              </TooltipProvider>
-            </CurrentUserProvider>
-          </NextIntlClientProvider>
-        </Provider>
+        <FaroProvider>
+          <Provider>
+            <NextIntlClientProvider messages={messages}>
+              <CurrentUserProvider>
+                <TooltipProvider>
+                  <Toaster closeButton richColors />
+                  {children}
+                </TooltipProvider>
+              </CurrentUserProvider>
+            </NextIntlClientProvider>
+          </Provider>
+        </FaroProvider>
       </body>
     </html>
   );

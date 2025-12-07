@@ -178,6 +178,26 @@ src/
 
 **Real-time Updates**: Socket.io client in hooks for WebSocket connections.
 
+**Frontend Observability**: Grafana Faro SDK integrated for:
+- Automatic error tracking and reporting
+- Performance monitoring (Core Web Vitals, FCP, LCP, FID, CLS)
+- User session tracking and replay
+- Custom event logging
+- Distributed tracing integration with Tempo
+
+Helper functions available in `FaroProvider`:
+- `logFaroEvent(name, attributes)`: Log custom events
+- `setFaroUser(userId, email, username)`: Set user context
+- `logFaroError(error, context)`: Manually log errors
+
+Configuration via environment variables:
+- `NEXT_PUBLIC_FARO_URL`: Faro collector endpoint (e.g., `http://localhost:12345/collect`)
+- `NEXT_PUBLIC_FARO_APP_NAME`: Application name (default: `asset2go-web`)
+- `NEXT_PUBLIC_APP_VERSION`: Application version for tracking
+- `NEXT_PUBLIC_ENVIRONMENT`: Environment label (development/staging/production)
+
+The Faro collector runs as a Docker service and forwards telemetry to Loki (logs) and Tempo (traces).
+
 #### Running Single Tests
 ```bash
 cd apps/web
@@ -341,6 +361,36 @@ Benefits:
 - `docker-compose.yml`: Production-like stack (default)
 - `docker-compose.dev.yml`: Development override with hot-reload
 - `docker-compose.coolify.override.yml`: Coolify deployment config
+
+**Services**:
+- `api`: NestJS backend (port 3500)
+- `worker`: Background job processor
+- `web`: Next.js frontend (port 3501)
+
+**Infrastructure Stack** (`infrastructure/lgtm-docker/`):
+For local development, the LGTM observability stack runs separately from the application:
+
+```bash
+cd infrastructure/lgtm-docker
+cp .env.example .env  # First time only
+docker compose up -d
+```
+
+Services:
+- `grafana`: Visualization and dashboards (port 3000, http://localhost:3000)
+- `loki`: Log aggregation and storage (port 3100)
+- `tempo`: Distributed tracing (ports 4317 gRPC, 4318 HTTP)
+- `mimir`: Metrics storage and querying (port 9090)
+- `otelcol`: OpenTelemetry collector (ports 4317/4318 OTLP, 8888 monitoring)
+- `faro-collector`: Frontend telemetry collector (port 12345, receives from browser)
+
+The API and Web applications send telemetry to this infrastructure stack:
+- API logs → Loki (via Pino transport)
+- API traces → Tempo (via OpenTelemetry)
+- Web logs/errors → Loki (via Faro collector)
+- Web traces/performance → Tempo (via Faro collector)
+
+See `infrastructure/lgtm-docker/README.md` for detailed setup and usage.
 
 ## Testing Strategy
 

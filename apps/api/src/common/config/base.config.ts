@@ -13,10 +13,8 @@ export const baseConfig = {
   },
   app: {
     url: process.env.APP_URL
-      ? process.env.APP_URL.endsWith("/")
-        ? process.env.APP_URL
-        : `${process.env.APP_URL}/`
-      : "http://localhost:3000/",
+      ? process.env.APP_URL.trim().replace(/\/+$/, "") // Trim whitespace & remove trailing slashes
+      : "http://localhost:3000",
   },
   neo4j: {
     uri: process.env.NEO4J_URI || "",

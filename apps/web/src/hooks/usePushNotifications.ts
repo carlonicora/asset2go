@@ -1,5 +1,6 @@
 "use client";
 
+import { ENV } from "@/config/env";
 import { PushService } from "@/features/foundations/push/data/PushService";
 import { useCurrentUserContext } from "@/features/foundations/user/contexts/CurrentUserContext";
 import { AuthRole } from "@/permisions/enums/AuthRole";
@@ -27,7 +28,7 @@ export default function usePushNotifications(): void {
           const sessionKey = `push_registered_${currentUser?.id}`;
           const lastRegisteredSubscription = sessionStorage.getItem(sessionKey);
 
-          const registration = await navigator.serviceWorker.register(`${process.env.NEXT_PUBLIC_ADDRESS}/sw.js`);
+          const registration = await navigator.serviceWorker.register(`${ENV.APP_URL}/sw.js`);
 
           // Check current permission status first
           let permission = Notification.permission;

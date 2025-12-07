@@ -1,3 +1,4 @@
+import { ENV } from "@/config/env";
 import { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { headers } from "next/headers";
@@ -11,7 +12,7 @@ export async function generateSpecificMetadata(params: {
 }): Promise<Metadata> {
   const t = await getTranslations();
 
-  const url = (await headers()).get("x-full-url") ?? process.env.NEXT_PUBLIC_ADDRESS;
+  const url = (await headers()).get("x-full-url") ?? ENV.APP_URL;
 
   const title: string = params.title ? `${params.title} | ${t(`generic.title`)}` : t(`generic.title`);
   const description = params.description ? params.description : t(`generic.description`);
@@ -33,7 +34,7 @@ export async function generateSpecificMetadata(params: {
       title: title,
       description: description,
     },
-    metadataBase: new URL(process.env.NEXT_PUBLIC_ADDRESS ?? ""),
+    metadataBase: new URL(ENV.APP_URL ?? ""),
     alternates: {
       canonical: url,
       languages: {
