@@ -1,3 +1,9 @@
+## [1.9.5](https://github.com/carlonicora/asset2go/compare/v1.9.4...v1.9.5) (2025-12-07)
+
+### 🐛 Bug Fixes
+
+* make faro optional ([4bac626](https://github.com/carlonicora/asset2go/commit/4bac62613825480298beeaceb95b9379c8dcfe4f))
+
 ## [1.9.4](https://github.com/carlonicora/asset2go/compare/v1.9.3...v1.9.4) (2025-12-07)
 
 ### 🐛 Bug Fixes
