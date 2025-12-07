@@ -1,3 +1,14 @@
+## [1.9.4](https://github.com/carlonicora/asset2go/compare/v1.9.3...v1.9.4) (2025-12-07)
+
+### 🐛 Bug Fixes
+
+* remove console log ([23268dc](https://github.com/carlonicora/asset2go/commit/23268dc06a756551c5cb7c75d331cd27dd93af9b))
+* update packages ([9800f16](https://github.com/carlonicora/asset2go/commit/9800f16baf064eb9e70fdeefdb05c70a870687be))
+
+### ♻️ Chores
+
+* update nextjs version to avoid vulnerability ([c272aaf](https://github.com/carlonicora/asset2go/commit/c272aaf657b6d4fa28716cbf7ebb5a0df8be3bb3))
+
 ## [1.9.3](https://github.com/carlonicora/asset2go/compare/v1.9.2...v1.9.3) (2025-11-02)
 
 ### 🐛 Bug Fixes
